@@ -21,7 +21,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-          cache: node
 
       - name: Run eslint
         run: npm run lint
