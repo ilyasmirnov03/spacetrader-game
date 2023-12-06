@@ -3,7 +3,7 @@ import './App.css';
 import { Header } from './components/@ui/header/Header';
 import { LocalStorageEnum } from './enum/local-storage.enum';
 import { useEffect } from 'react';
-import { Dashboard } from './components/dashboard/root/Dashboard';
+import {Outlet} from 'react-router-dom';
 
 function App() {
 
@@ -13,14 +13,18 @@ function App() {
   useEffect(() => {
     if (!loginToken) {
       navigate('/login');
+    } else {
+      navigate('/dashboard');
     }
-  }, []);
+  }, [loginToken, navigate]);
 
   return (
-    <>
+    <main className="main-layout">
       <Header></Header>
-      <Dashboard></Dashboard>
-    </>
+      <section className="outlet-section">
+        <Outlet></Outlet>
+      </section>
+    </main>
   )
 }
 
