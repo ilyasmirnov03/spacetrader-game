@@ -3,7 +3,8 @@ import './App.css';
 import { Header } from './components/@ui/header/Header';
 import { LocalStorageEnum } from './enum/local-storage.enum';
 import { useEffect } from 'react';
-import {Outlet} from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import environment from './constants/environment.const';
 
 function App() {
 
@@ -14,7 +15,8 @@ function App() {
     if (!loginToken) {
       navigate('/login');
     } else {
-      navigate('/dashboard');
+      environment.loginToken = loginToken;
+      navigate(window.location.pathname);
     }
   }, [loginToken, navigate]);
 
