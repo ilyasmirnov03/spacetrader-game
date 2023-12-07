@@ -1,4 +1,4 @@
-export interface AgentInfo {
+export interface AgentInfoModel {
     accountId: string;
     credits: number;
     headquarters: string;

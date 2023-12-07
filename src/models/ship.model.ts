@@ -112,7 +112,7 @@ interface Engine {
     requirements: Requirements;
 }
 
-export interface Ship {
+export interface ShipModel {
     symbol: string;
     nav: Nav;
     crew: Crew;
