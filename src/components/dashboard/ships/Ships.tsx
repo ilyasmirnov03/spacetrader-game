@@ -10,7 +10,6 @@ export const Ships: FC<ShipsProps> = () => {
     const [ships, setShips] = useState<Ship[]>();
 
     function getShips(): void {
-        console.log(environment.loginToken);
         axios.get(`${environment.baseUrl}/my/ships`, {
             headers: {
                 'Content-Type': 'application/json',
