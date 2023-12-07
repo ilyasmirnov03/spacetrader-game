@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { Header } from './components/@ui/header/Header';
 import { LocalStorageEnum } from './enum/local-storage.enum';
-import { useEffect } from 'react';
+import {useCallback, useEffect} from 'react';
 import { Outlet } from 'react-router-dom';
 import environment from './constants/environment.const';
 import './styles/global.css';
@@ -11,13 +11,15 @@ function App() {
   const navigate = useNavigate();
   const loginToken = localStorage.getItem(LocalStorageEnum.LOGIN_KEY);
 
-  function redirectFromPathname(path: string): void {
-    if (path === '/') {
-      navigate('/dashboard');
-    } else {
-      navigate(path);
-    }
-  }
+  const redirectFromPathname = useCallback(
+      (path: string) => {
+        if (path === '/') {
+          navigate('/dashboard');
+        } else {
+          navigate(path);
+        }
+      }, [navigate]
+  )
 
   useEffect(() => {
     if (!loginToken) {
@@ -26,7 +28,7 @@ function App() {
       environment.loginToken = loginToken;
       redirectFromPathname(window.location.pathname);
     }
-  }, [loginToken, navigate]);
+  }, [loginToken, navigate, redirectFromPathname]);
 
   return (
     <main className="main-layout">

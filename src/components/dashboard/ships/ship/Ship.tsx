@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useCallback, useEffect, useState} from 'react';
 import {ShipModel} from '../../../../models/ship.model.ts';
 import {useLocation, useParams} from 'react-router-dom';
 import axios from 'axios';
@@ -17,16 +17,17 @@ export const Ship: FC<ShipProps> = () => {
     // Id from url params
     const { shipId } = useParams();
 
-    function getShip(): void {
-        axios.get(`${environment.baseUrl}/my/ships/${shipId}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${environment.loginToken}`
-            },
-        }).then((data) => {
-            setShip((data.data as ApiResponse).data as ShipModel | undefined);
-        });
-    }
+    const getShip = useCallback(
+        () => {
+            axios.get(`${environment.baseUrl}/my/ships/${shipId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${environment.loginToken}`
+                },
+            }).then((data) => {
+                setShip((data.data as ApiResponse).data as ShipModel | undefined);
+            });
+        }, [shipId]);
 
     useEffect(() => {
         if (state?.ship) {
@@ -34,8 +35,7 @@ export const Ship: FC<ShipProps> = () => {
         } else {
             getShip();
         }
-    }, []);
-
+    }, [state?.ship, getShip]);
 
     return (
         <section>
