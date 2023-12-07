@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { Ship } from "../../../models/ship";
 import environment from "../../../constants/environment.const";
 import { ApiResponse } from "../../../models/api-response";
-interface ShipsProps { };
+interface ShipsProps { }
 
 export const Ships: FC<ShipsProps> = () => {
 

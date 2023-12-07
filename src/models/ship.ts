@@ -80,7 +80,7 @@ interface Registration {
 interface Cargo {
     capacity: number;
     units: number;
-    inventory: any[];
+    inventory: unknown[];
 }
 
 interface Frame {
