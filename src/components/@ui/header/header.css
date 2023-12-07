@@ -1,0 +1,12 @@
+.header {
+    padding: .5rem var(--main-layout-vertical-padding);
+}
+
+.headerLink {
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius);
+    color: var(--color-primary-dark);
+    margin: .5rem 0;
+    padding: .5rem;
+    display: block;
+}

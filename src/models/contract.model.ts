@@ -16,7 +16,7 @@ interface Deliver {
     unitsFulfilled: number;
 }
 
-export interface Contract {
+export interface ContractModel {
     id: string;
     factionSymbol: string;
     type: string;

@@ -1,0 +1,6 @@
+.ship__waypoints {
+    display: flex;
+    overflow-x: scroll;
+    gap: 1rem;
+    padding: 1rem 0;
+}
