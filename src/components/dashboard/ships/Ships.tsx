@@ -39,7 +39,7 @@ export const Ships: FC<ShipsProps> = () => {
                         <p>Fuel: {ship.fuel.current} / {ship.fuel.capacity}</p>
                         <progress value={ship.fuel.current} max={ship.fuel.capacity}></progress>
                         <footer>
-                            <Link className="linkButton" to={`/ships/${ship.symbol}`} state={{ ship }}>Ship details</Link>
+                            <Link className="button" to={`/ships/${ship.symbol}`} state={{ ship }}>Ship details</Link>
                         </footer>
                     </article>
                 ))}

@@ -1,3 +1,5 @@
+import {Cooldown} from './cooldown.model.ts';
+
 interface Route {
     symbol: string;
     type: string;
@@ -40,12 +42,6 @@ interface Fuel {
     current: number;
     capacity: number;
     consumed: FuelConsumed;
-}
-
-interface Cooldown {
-    shipSymbol: string;
-    totalSeconds: number;
-    remainingSeconds: number;
 }
 
 interface Requirements {
