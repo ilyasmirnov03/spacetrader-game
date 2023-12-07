@@ -11,12 +11,20 @@ function App() {
   const navigate = useNavigate();
   const loginToken = localStorage.getItem(LocalStorageEnum.LOGIN_KEY);
 
+  function redirectFromPathname(path: string): void {
+    if (path === '/') {
+      navigate('/dashboard');
+    } else {
+      navigate(path);
+    }
+  }
+
   useEffect(() => {
     if (!loginToken) {
       navigate('/login');
     } else {
       environment.loginToken = loginToken;
-      navigate(window.location.pathname);
+      redirectFromPathname(window.location.pathname);
     }
   }, [loginToken, navigate]);
 
