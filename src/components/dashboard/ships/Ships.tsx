@@ -29,17 +29,17 @@ export const Ships: FC<ShipsProps> = () => {
 
     return (
         <section>
-            <header>
-                <h2>Ships</h2>
+            <header className="mb-10">
+                <h2 className="title-3xl">Ships</h2>
             </header>
             <div className="shipsContainer">
                 {ships?.map(ship => (
                     <article key={ship.symbol}>
-                        <h3>{ship.symbol}</h3>
+                        <h3 className="title-2xl">{ship.symbol}</h3>
                         <p>Fuel: {ship.fuel.current} / {ship.fuel.capacity}</p>
                         <progress value={ship.fuel.current} max={ship.fuel.capacity}></progress>
                         <footer>
-                            <Link className="linkButton" to={`/ships/${ship.symbol}`} state={{ ship }}>See ship details</Link>
+                            <Link className="linkButton" to={`/ships/${ship.symbol}`} state={{ ship }}>Ship details</Link>
                         </footer>
                     </article>
                 ))}

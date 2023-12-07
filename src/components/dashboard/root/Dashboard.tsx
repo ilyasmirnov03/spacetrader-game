@@ -18,10 +18,10 @@ export const Dashboard: FC<DashboardProps> = () => {
 
     return (
         <>
-            <h2>Dashboard</h2>
+            <h2 className="title-3xl mb-10">Dashboard</h2>
             {/* Agent info */}
             <section>
-                <h3>Agent info</h3>
+                <h3 className="title-2xl">Agent info</h3>
                 <ul className="dashboard">
                     {Object.keys(agent ?? {}).map((key, i) => (
                         <li className="dashboard__item" key={i}><b>{key}:</b> {agent ? agent[key as keyof AgentInfoModel] : ''}</li>

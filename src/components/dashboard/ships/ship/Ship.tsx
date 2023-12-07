@@ -39,7 +39,7 @@ export const Ship: FC<ShipProps> = () => {
 
     return (
         <section>
-            <h2>{ship?.symbol}</h2>
+            <h2 className="title-3xl mb-10">{ship?.symbol}</h2>
             <p>Fuel: {ship?.fuel.current} / {ship?.fuel.capacity}</p>
             <progress value={ship?.fuel.current} max={ship?.fuel.capacity}></progress>
         </section>

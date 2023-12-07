@@ -1,5 +1,5 @@
 .header {
-    padding: .5rem 1rem;
+    padding: .5rem var(--main-layout-vertical-padding);
 }
 
 .headerLink {

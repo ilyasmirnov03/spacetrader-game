@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
-import './App.css';
 import { Header } from './components/@ui/header/Header';
 import { LocalStorageEnum } from './enum/local-storage.enum';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import environment from './constants/environment.const';
+import './styles/global.css';
 
 function App() {
 
