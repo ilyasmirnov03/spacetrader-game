@@ -28,6 +28,7 @@ body {
   padding: .5rem 2rem;
   border-radius: var(--border-radius);
   display: block;
+  width: fit-content;
 }
 
 .title-1xl {
