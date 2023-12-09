@@ -106,12 +106,12 @@ export const Ship: FC<ShipProps> = () => {
             {/* Waypoints holder */}
             <ul className="ship__waypoints">
                 {waypoints?.map(waypoint => (
-                    <li key={waypoint.symbol}>
+                    <li className="ship__waypoint" key={waypoint.symbol}>
                         <p>{waypoint.type}</p>
-                        <p>Distance - {getDistance(
+                        <p>Distance - {Math.round(getDistance(
                             {x: ship?.nav.route.destination.x ?? 0, y: ship?.nav.route.destination.y ?? 0},
                             {x: waypoint.x, y: waypoint.y},
-                        )}</p>
+                        ))}</p>
                     </li>
                 ))}
             </ul>

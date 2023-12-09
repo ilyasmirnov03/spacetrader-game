@@ -4,3 +4,9 @@
     gap: 1rem;
     padding: 1rem 0;
 }
+
+.ship__waypoint {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background-color: var(--color-primary-lighter);
+}
