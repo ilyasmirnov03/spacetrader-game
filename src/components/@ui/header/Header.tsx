@@ -3,6 +3,7 @@ import { HeaderLink } from "../../../models/header-link";
 import { Link } from "react-router-dom";
 import "./header.css";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {useAuth} from '../../../hooks/auth/useAuth.tsx';
 interface HeaderProps { }
 
 export const Header: FC<HeaderProps> = () => {
@@ -20,9 +21,7 @@ export const Header: FC<HeaderProps> = () => {
         },
     ];
 
-    function logOut(): void {
-        localStorage.clear();
-    }
+    const auth = useAuth();
 
     return (
         <header className="header">
@@ -33,7 +32,7 @@ export const Header: FC<HeaderProps> = () => {
                             <Link className="headerLink" to={link.url}><FontAwesomeIcon icon={link.icon} /></Link>
                         </li>
                     ))}
-                    <li onClick={logOut}>
+                    <li onClick={auth.logout}>
                         <Link className="headerLink" to="/login"><FontAwesomeIcon icon="arrow-right-from-bracket" /></Link>
                     </li>
                 </ul>

@@ -2,16 +2,19 @@ import {FC, useCallback, useEffect, useState} from 'react';
 import {ShipModel} from '../../../../models/ship.model.ts';
 import {useLocation, useParams} from 'react-router-dom';
 import axios from 'axios';
-import environment from '../../../../constants/environment.const.ts';
 import {ApiResponse} from '../../../../models/api-response.ts';
 import {Waypoint, WaypointResponse} from '../../../../models/waypoint.model.ts';
 import {Point} from '../../../../models/point.ts';
-import "./ship.css";
+import './ship.css';
+import {useAuth} from '../../../../hooks/auth/useAuth.tsx';
+import {url} from '../../../../constants/url.const.ts';
 
 interface ShipProps {
 }
 
 export const Ship: FC<ShipProps> = () => {
+
+    const auth = useAuth();
 
     const [ship, setShip] = useState<ShipModel>();
     const [waypoints, setWaypoints] = useState<Waypoint[]>();
@@ -23,19 +26,18 @@ export const Ship: FC<ShipProps> = () => {
     // Id from url params
     const {shipId} = useParams();
 
-    const getShip = useCallback(
-        () => {
-            axios.get(`${environment.baseUrl}/my/ships/${shipId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${environment.loginToken}`
-                },
-            }).then((data) => {
-                const ship = (data.data as ApiResponse).data as ShipModel | undefined;
-                setShip(ship);
-                setCooldown(ship?.cooldown.remainingSeconds);
-            });
-        }, [shipId]);
+    const getShip = useCallback(() => {
+        axios.get(`${url}/my/ships/${shipId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.token}`
+            },
+        }).then((data) => {
+            const ship = (data.data as ApiResponse).data as ShipModel | undefined;
+            setShip(ship);
+            setCooldown(ship?.cooldown.remainingSeconds);
+        });
+    }, [shipId, auth.token]);
 
     // Initialize ship state from url state or from API
     useEffect(() => {
@@ -80,12 +82,12 @@ export const Ship: FC<ShipProps> = () => {
 
     // Scan waypoints around this ship
     function scanWaypoints(): void {
-        axios.post(`${environment.baseUrl}/my/ships/${ship?.symbol}/scan/waypoints`,
+        axios.post(`${url}/my/ships/${ship?.symbol}/scan/waypoints`,
             undefined,
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${environment.loginToken}`
+                    'Authorization': `Bearer ${auth.token}`
                 },
             }
         ).then((data) => {
@@ -97,7 +99,7 @@ export const Ship: FC<ShipProps> = () => {
 
     return (
         <section>
-            <h2 className="title-3xl mb-10">{ship?.symbol} - Cooldown {cooldown}</h2>
+            <h2 className="title-3xl mb-10">{ship?.symbol} - Cooldown {cooldown}s</h2>
             <p>Fuel: {ship?.fuel.current} / {ship?.fuel.capacity}</p>
             <progress value={ship?.fuel.current} max={ship?.fuel.capacity}></progress>
             <button disabled={cooldown != 0} className="button" onClick={scanWaypoints}>Scan nearby waypoints</button>

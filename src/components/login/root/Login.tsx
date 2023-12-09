@@ -1,15 +1,11 @@
 import { FC, FormEvent } from 'react';
-import axios from 'axios';
-import { LocalStorageEnum } from '../../../enum/local-storage.enum';
-import { useNavigate } from 'react-router';
-import { ApiResponse } from '../../../models/api-response.ts';
-import environment from '../../../constants/environment.const.ts';
+import {useAuth} from '../../../hooks/auth/useAuth.tsx';
 
 interface LoginProps {
 }
 
 export const Login: FC<LoginProps> = () => {
-    const navigate = useNavigate();
+    const auth = useAuth();
 
     // Typed token in input
     let token = '';
@@ -20,19 +16,7 @@ export const Login: FC<LoginProps> = () => {
 
     function login(e: FormEvent): void {
         e.preventDefault();
-        axios.get(`${environment.baseUrl}/my/agent`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-        }).then((data) => {
-            localStorage.setItem(LocalStorageEnum.LOGIN_KEY, token);
-            localStorage.setItem(LocalStorageEnum.AGENT, JSON.stringify((data.data as ApiResponse).data));
-            environment.loginToken = token;
-            navigate('/dashboard');
-        }).catch(err => {
-            console.error(err);
-        });
+        auth.login(token, '/');
     }
 
     return (

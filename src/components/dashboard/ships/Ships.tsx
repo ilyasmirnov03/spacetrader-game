@@ -1,10 +1,11 @@
 import axios from "axios";
-import { FC, useEffect, useState } from "react";
+import {FC, useCallback, useEffect, useState} from 'react';
 import { ShipModel } from "../../../models/ship.model.ts";
-import environment from "../../../constants/environment.const";
 import { ApiResponse } from "../../../models/api-response";
 import {Link} from 'react-router-dom';
 import "./ships.css";
+import {url} from '../../../constants/url.const.ts';
+import {useAuth} from '../../../hooks/auth/useAuth.tsx';
 
 interface ShipsProps { }
 
@@ -12,20 +13,22 @@ export const Ships: FC<ShipsProps> = () => {
 
     const [ships, setShips] = useState<ShipModel[]>();
 
-    function getShips(): void {
-        axios.get(`${environment.baseUrl}/my/ships`, {
+    const auth = useAuth();
+
+    const getShips = useCallback(() => {
+        axios.get(`${url}/my/ships`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${environment.loginToken}`
+                'Authorization': `Bearer ${auth.token}`
             },
         }).then((data) => {
             setShips((data.data as ApiResponse).data as ShipModel[]);
         });
-    }
+    }, [auth.token]);
 
     useEffect(() => {
         getShips();
-    }, [])
+    }, [getShips])
 
     return (
         <section>
