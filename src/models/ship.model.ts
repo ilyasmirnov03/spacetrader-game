@@ -80,7 +80,7 @@ interface Registration {
 interface Cargo {
     capacity: number;
     units: number;
-    inventory: unknown[];
+    inventory: CargoInventory[];
 }
 
 interface Frame {
@@ -110,6 +110,13 @@ interface Engine {
     condition: number;
     speed: number;
     requirements: Requirements;
+}
+
+interface CargoInventory {
+    symbol: string;
+    name: string;
+    description: string;
+    units: number;
 }
 
 export interface ShipModel {

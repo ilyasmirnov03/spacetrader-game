@@ -25,6 +25,7 @@ export interface Waypoint {
     faction: Faction;
     traits: Trait[];
     chart: Chart;
+    isUnderConstruction?: boolean;
 }
 
 export interface WaypointResponse {

@@ -5,19 +5,19 @@ import App from './App.tsx';
 import {Login} from './components/login/root/Login.tsx';
 import {Dashboard} from './components/dashboard/root/Dashboard.tsx';
 import {Ships} from './components/dashboard/ships/Ships.tsx';
-import {Ship} from './components/dashboard/ships/ship/Ship.tsx';
+import {ShipDetails} from './components/dashboard/ship-details/ShipDetails.tsx';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
     faAnchor,
     faAnglesRight,
     faArrowRightFromBracket,
-    faChartSimple,
+    faChartSimple, faCoins,
     faRocket, faSatellite
 } from '@fortawesome/free-solid-svg-icons';
 import {AuthContextProvider} from './providers/auth/AuthContextProvider.tsx';
 
 // Init icons
-library.add(faRocket, faChartSimple, faArrowRightFromBracket, faAnchor, faAnglesRight, faSatellite);
+library.add(faRocket, faChartSimple, faArrowRightFromBracket, faAnchor, faAnglesRight, faSatellite, faCoins);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
@@ -28,7 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     <Route path="/" element={<App/>}>
                         <Route path="/dashboard" element={<Dashboard/>}></Route>
                         <Route path="/ships" element={<Ships/>}></Route>
-                        <Route path="/ships/:shipId" element={<Ship/>}></Route>
+                        <Route path="/ships/:shipId" element={<ShipDetails/>}></Route>
                     </Route>
                 </Routes>
             </AuthContextProvider>

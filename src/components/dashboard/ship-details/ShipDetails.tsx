@@ -1,21 +1,19 @@
 import {FC, useCallback, useEffect, useState} from 'react';
-import {ShipModel} from '../../../../models/ship.model.ts';
+import {ShipModel} from '../../../models/ship.model.ts';
 import {useLocation, useParams} from 'react-router-dom';
 import axios from 'axios';
-import {ApiResponse} from '../../../../models/api-response.ts';
-import {Waypoint, WaypointResponse} from '../../../../models/waypoint.model.ts';
-import './ship.css';
-import {useAuth} from '../../../../hooks/auth/useAuth.tsx';
-import {url} from '../../../../constants/url.const.ts';
-import {shipCanPerformAction} from '../../../../utils/ship/shipCanPerformAction.ts';
-import {shipNavStatusTransform} from '../../../../utils/ship/shipNavStatusTransform.tsx';
-import {getArrivalTime} from '../../../../utils/ship/getArrivalTime.ts';
-import {getDistanceToWaypoint} from '../../../../utils/ship/getDistanceToWaypoint.ts';
+import {ApiResponse} from '../../../models/api-response.ts';
+import {Waypoint, WaypointResponse} from '../../../models/waypoint.model.ts';
+import './ship-details.css';
+import {useAuth} from '../../../hooks/auth/useAuth.tsx';
+import {url} from '../../../constants/url.const.ts';
+import {shipCanPerformAction} from '../../../utils/ship/shipCanPerformAction.ts';
+import {shipNavStatusTransform} from '../../../utils/ship/shipNavStatusTransform.tsx';
+import {getArrivalTime} from '../../../utils/ship/getArrivalTime.ts';
+import {getDistanceToWaypoint} from '../../../utils/ship/getDistanceToWaypoint.ts';
+import {WaypointInfo} from './waypoint-info/WaypointInfo.tsx';
 
-interface ShipProps {
-}
-
-export const Ship: FC<ShipProps> = () => {
+export const ShipDetails: FC = () => {
 
     const auth = useAuth();
 
@@ -42,7 +40,7 @@ export const Ship: FC<ShipProps> = () => {
         });
     }, [shipId, auth.token]);
 
-    // Initialize ship state from url state or from API
+    // Initialize ship-details state from url state or from API
     useEffect(() => {
         if (state?.ship) {
             setShip(state.ship as ShipModel);
@@ -76,7 +74,7 @@ export const Ship: FC<ShipProps> = () => {
         };
     }, [cooldown]);
 
-    // Scan waypoints around this ship
+    // Scan waypoints around this ship-details
     function scanWaypoints(): void {
         axios.post(`${url}/my/ships/${ship?.symbol}/scan/waypoints`,
             undefined,
@@ -102,6 +100,7 @@ export const Ship: FC<ShipProps> = () => {
             </header>
             <p>Fuel: {ship?.fuel.current} / {ship?.fuel.capacity}</p>
             <progress value={ship?.fuel.current} max={ship?.fuel.capacity}></progress>
+            <WaypointInfo ship={ship} />
             <button disabled={!shipCanPerformAction(ship, cooldown ?? 0)} className="button" onClick={scanWaypoints}>Scan nearby waypoints</button>
             {/* Waypoints holder */}
             <ul className="ship__waypoints">

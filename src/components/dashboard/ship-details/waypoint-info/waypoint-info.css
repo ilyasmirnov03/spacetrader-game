@@ -1,0 +1,13 @@
+.tradeGoods {
+    display: flex;
+    gap: 1rem;
+}
+
+.tradeGood {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background-color: var(--color-primary-lighter);
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
