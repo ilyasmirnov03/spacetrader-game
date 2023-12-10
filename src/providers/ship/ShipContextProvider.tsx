@@ -2,11 +2,10 @@ import {ReactElement, useCallback, useEffect, useState} from 'react';
 import {useAuth} from '../../hooks/auth/useAuth.tsx';
 import {useLocation, useParams} from 'react-router-dom';
 import {ShipContext} from '../../hooks/ship/ShipContext.ts';
-import {ShipModel} from '../../models/ship.model.ts';
+import {Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
 import {Waypoint, WaypointResponse} from '../../models/waypoint.model.ts';
-import {url} from '../../constants/url.const.ts';
-import {ApiResponse} from '../../models/api-response.ts';
-import axios from 'axios';
+import {callApi} from '../../utils/api/api-caller.ts';
+import {NavigateResponse} from '../../models/api-response/navigate-response.ts';
 
 interface ShipContextProviderProps {
     children: ReactElement;
@@ -25,31 +24,33 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
     const [ship, setShip] = useState<ShipModel>();
     const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
     const [cooldown, setCooldown] = useState<number>(0);
+    const [fuel, setFuel] = useState<Fuel>();
+    const [nav, setNav] = useState<Nav>();
+
+    function updateShip(ship: ShipModel | undefined) {
+        setShip(ship);
+        setFuel(ship?.fuel);
+        setNav(ship?.nav);
+        setCooldown(ship?.cooldown.remainingSeconds ?? 0);
+    }
 
     const getShip = useCallback(() => {
-        axios.get(`${url}/my/ships/${shipId}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${auth.token}`
-            },
-        }).then((data) => {
-            const ship = (data.data as ApiResponse).data as ShipModel;
-            setShip(ship);
-            setCooldown(ship.cooldown.remainingSeconds);
-        });
+        callApi<ShipModel>(`/my/ships/${shipId}`, auth.token)
+            .then((res) => {
+                updateShip(res.data);
+            });
     }, [shipId, auth.token]);
 
     // Initialize ship-details state from url state or from API
     useEffect(() => {
         if (state?.ship) {
-            setShip(state.ship as ShipModel);
-            setCooldown(state.ship.cooldown.remainingSeconds);
+            updateShip(state.ship);
         } else {
             getShip();
         }
     }, [state?.ship, getShip]);
 
-    // Handle interval logic
+    // Handle cooldown interval logic
     useEffect(() => {
         let intervalId: number;
 
@@ -75,19 +76,21 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
 
     // Scan waypoints around this ship-details
     function scanWaypoints(): void {
-        axios.post(`${url}/my/ships/${ship?.symbol}/scan/waypoints`,
-            undefined,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${auth.token}`
-                },
-            }
-        ).then((data) => {
-            const waypointResponse = (data.data as ApiResponse).data as WaypointResponse;
-            setWaypoints(waypointResponse.waypoints);
-            setCooldown(waypointResponse.cooldown.remainingSeconds);
-        });
+        callApi<WaypointResponse>(`/my/ships/${ship?.symbol}/scan/waypoints`, auth.token, 'post')
+            .then((res) => {
+                setWaypoints(res.data.waypoints);
+                setCooldown(res.data.cooldown.remainingSeconds);
+            });
+    }
+
+    function navigateToWaypoint(waypoint: Waypoint): void {
+        callApi<NavigateResponse>(`/my/ships/${ship?.symbol}/navigate`, auth.token, 'post', {
+            waypointSymbol: waypoint.symbol
+        })
+            .then((res) => {
+                setFuel(res.data.fuel);
+                setNav(res.data.nav);
+            });
     }
 
     return <ShipContext.Provider value={{
@@ -95,6 +98,9 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
         waypoints,
         scanWaypoints,
         cooldown,
+        navigateToWaypoint,
+        fuel,
+        nav
     }}>
         {children}
     </ShipContext.Provider>;

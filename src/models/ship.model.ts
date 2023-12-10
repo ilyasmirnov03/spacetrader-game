@@ -20,7 +20,7 @@ export type NavStatus = 'IN_TRANSIT' | 'IN_ORBIT' | 'DOCKED';
 
 export type FlightMode = 'CRUISE' | 'DRIFT' | 'BURN' | 'STEALTH';
 
-interface Nav {
+export interface Nav {
     systemSymbol: string;
     waypointSymbol: string;
     route: NavRoute;
@@ -42,7 +42,7 @@ interface FuelConsumed {
     timestamp: string;
 }
 
-interface Fuel {
+export interface Fuel {
     current: number;
     capacity: number;
     consumed: FuelConsumed;

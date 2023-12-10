@@ -2,7 +2,7 @@ import {ReactElement, useCallback, useEffect, useState} from 'react';
 import {useNavigate} from 'react-router';
 import axios from 'axios';
 import {LocalStorageEnum} from '../../enum/local-storage.enum.ts';
-import {ApiResponse} from '../../models/api-response.ts';
+import {ApiResponse} from '../../models/api-response/api-response.ts';
 import {AuthContext} from '../../hooks/auth/AuthContext.ts';
 import {url} from '../../constants/url.const.ts';
 import {AgentInfoModel} from '../../models/agent-info.model.ts';

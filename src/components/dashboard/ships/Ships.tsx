@@ -1,7 +1,7 @@
 import axios from "axios";
 import {FC, useCallback, useEffect, useState} from 'react';
 import { ShipModel } from "../../../models/ship.model.ts";
-import { ApiResponse } from "../../../models/api-response";
+import { ApiResponse } from "../../../models/api-response/api-response.ts";
 import {Link} from 'react-router-dom';
 import "./ships.css";
 import {url} from '../../../constants/url.const.ts';

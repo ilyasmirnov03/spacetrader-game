@@ -1,45 +1,45 @@
 import {FC, useCallback, useEffect, useState} from 'react';
-import {ShipModel} from '../../../../models/ship.model.ts';
+import {Nav} from '../../../../models/ship.model.ts';
 import axios from 'axios';
 import {url} from '../../../../constants/url.const.ts';
 import {Waypoint} from '../../../../models/waypoint.model.ts';
-import {ApiResponse} from '../../../../models/api-response.ts';
+import {ApiResponse} from '../../../../models/api-response/api-response.ts';
 import {Market} from '../../../../models/market.model.ts';
 import {useAuth} from '../../../../hooks/auth/useAuth.tsx';
 import "./waypoint-info.css";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 interface WaypointInfoProps {
-    ship: ShipModel | undefined,
+    nav: Nav | undefined,
 }
 
-export const WaypointInfo: FC<WaypointInfoProps> = ({ship}) => {
+export const WaypointInfo: FC<WaypointInfoProps> = ({nav}) => {
     const [waypoint, setWaypoint] = useState<Waypoint>();
     const [marketplace, setMarketplace] = useState<Market>();
 
     const auth = useAuth();
 
     const getLocation = useCallback(() => {
-        if (!ship) {
+        if (!nav) {
             return;
         }
-        axios.get(`${url}/systems/${ship.nav.systemSymbol}/waypoints/${ship.nav.waypointSymbol}`)
+        axios.get(`${url}/systems/${nav.systemSymbol}/waypoints/${nav.waypointSymbol}`)
             .then((data) => {
-                const response = data.data as ApiResponse;
-                setWaypoint(response.data as Waypoint);
+                const response = data.data as ApiResponse<Waypoint>;
+                setWaypoint(response.data);
             });
-    }, [ship]);
+    }, [nav]);
 
     function getMarketplaceInfo(): void {
-        axios.get(`${url}/systems/${ship?.nav.systemSymbol}/waypoints/${ship?.nav.waypointSymbol}/market`, {
+        axios.get(`${url}/systems/${nav?.systemSymbol}/waypoints/${nav?.waypointSymbol}/market`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${auth.token}`
             }
         })
             .then((data) => {
-                const response = data.data as ApiResponse;
-                setMarketplace(response.data as Market);
+                const response = data.data as ApiResponse<Market>;
+                setMarketplace(response.data);
             });
     }
 

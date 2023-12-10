@@ -15,13 +15,16 @@ export const ShipDetails: FC = () => {
     return (
         <section>
             <header className="mb-10">
-                <h2 className="title-3xl">{shipContext.ship?.symbol} - Cooldown {shipContext.cooldown}s</h2>
-                {shipNavStatusTransform(shipContext.ship)}
-                <p>Flight mode: {shipContext.ship?.nav.flightMode}</p>
+                <div className="flex">
+                    <h2 className="title-3xl">{shipContext.ship?.symbol} - Cooldown {shipContext.cooldown}s</h2>
+                    <button className="icon"><FontAwesomeIcon icon="rotate-right" /></button>
+                </div>
+                {shipNavStatusTransform(shipContext.nav)}
+                <p>Flight mode: {shipContext.nav?.flightMode}</p>
             </header>
-            <p><FontAwesomeIcon icon="gas-pump"/> {shipContext.ship?.fuel.current} / {shipContext.ship?.fuel.capacity}</p>
-            <progress className='fuel' value={shipContext.ship?.fuel.current} max={shipContext.ship?.fuel.capacity}></progress>
-            <WaypointInfo ship={shipContext.ship}/>
+            <p><FontAwesomeIcon icon="gas-pump"/> {shipContext.fuel?.current} / {shipContext.fuel?.capacity}</p>
+            <progress className='fuel' value={shipContext.fuel?.current} max={shipContext.fuel?.capacity}></progress>
+            <WaypointInfo nav={shipContext.nav}/>
             <button disabled={!shipCanPerformAction(shipContext.ship, shipContext.cooldown ?? 0)} className="button"
                     onClick={shipContext.scanWaypoints}>Scan nearby waypoints
             </button>
@@ -33,6 +36,7 @@ export const ShipDetails: FC = () => {
                         <p>{waypoint.traits.map(trait => trait.name + ',')}</p>
                         <p>Distance - {Math.round(getDistanceToWaypoint(shipContext.ship, waypoint))}</p>
                         <p>Will arrive: {getArrivalTime(shipContext.ship, waypoint)}</p>
+                        <button className="button" onClick={() => shipContext.navigateToWaypoint(waypoint)}>Navigate to waypoint</button>
                     </li>
                 ))}
             </ul>
