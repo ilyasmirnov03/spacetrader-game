@@ -5,6 +5,7 @@
 
 :root {
   --color-white: #e7e7e7;
+  --color-gray: #cecece;
   --color-primary: #ffe449;
   --color-primary-dark: #181818;
   --color-primary-lighter: #282828;
@@ -30,6 +31,17 @@ body {
   border-radius: var(--border-radius);
   display: block;
   width: fit-content;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--color-gray);
+}
+
+.button[disabled] {
+  opacity: 0.90;
 }
 
 .title-1xl {

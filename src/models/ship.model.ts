@@ -16,12 +16,16 @@ interface NavRoute {
     departureTime: string;
 }
 
+export type NavStatus = 'IN_TRANSIT' | 'IN_ORBIT' | 'DOCKED';
+
+export type FlightMode = 'CRUISE' | 'DRIFT' | 'BURN' | 'STEALTH';
+
 interface Nav {
     systemSymbol: string;
     waypointSymbol: string;
     route: NavRoute;
-    status: string;
-    flightMode: string;
+    status: NavStatus;
+    flightMode: FlightMode;
 }
 
 interface Crew {

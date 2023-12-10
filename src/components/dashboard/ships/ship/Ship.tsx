@@ -4,10 +4,13 @@ import {useLocation, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {ApiResponse} from '../../../../models/api-response.ts';
 import {Waypoint, WaypointResponse} from '../../../../models/waypoint.model.ts';
-import {Point} from '../../../../models/point.ts';
 import './ship.css';
 import {useAuth} from '../../../../hooks/auth/useAuth.tsx';
 import {url} from '../../../../constants/url.const.ts';
+import {shipCanPerformAction} from '../../../../utils/ship/shipCanPerformAction.ts';
+import {shipNavStatusTransform} from '../../../../utils/ship/shipNavStatusTransform.tsx';
+import {getArrivalTime} from '../../../../utils/ship/getArrivalTime.ts';
+import {getDistanceToWaypoint} from '../../../../utils/ship/getDistanceToWaypoint.ts';
 
 interface ShipProps {
 }
@@ -73,13 +76,6 @@ export const Ship: FC<ShipProps> = () => {
         };
     }, [cooldown]);
 
-    // Return distance based on two points
-    function getDistance(point1: Point, point2: Point): number {
-        const dx = point2.x - point1.x;
-        const dy = point2.y - point1.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-
     // Scan waypoints around this ship
     function scanWaypoints(): void {
         axios.post(`${url}/my/ships/${ship?.symbol}/scan/waypoints`,
@@ -99,19 +95,22 @@ export const Ship: FC<ShipProps> = () => {
 
     return (
         <section>
-            <h2 className="title-3xl mb-10">{ship?.symbol} - Cooldown {cooldown}s</h2>
+            <header className="mb-10">
+                <h2 className="title-3xl">{ship?.symbol} - Cooldown {cooldown}s</h2>
+                {shipNavStatusTransform(ship)}
+                <p>Flight mode: {ship?.nav.flightMode}</p>
+            </header>
             <p>Fuel: {ship?.fuel.current} / {ship?.fuel.capacity}</p>
             <progress value={ship?.fuel.current} max={ship?.fuel.capacity}></progress>
-            <button disabled={cooldown != 0} className="button" onClick={scanWaypoints}>Scan nearby waypoints</button>
+            <button disabled={!shipCanPerformAction(ship, cooldown ?? 0)} className="button" onClick={scanWaypoints}>Scan nearby waypoints</button>
             {/* Waypoints holder */}
             <ul className="ship__waypoints">
                 {waypoints?.map(waypoint => (
                     <li className="ship__waypoint" key={waypoint.symbol}>
                         <p>{waypoint.type}</p>
-                        <p>Distance - {Math.round(getDistance(
-                            {x: ship?.nav.route.destination.x ?? 0, y: ship?.nav.route.destination.y ?? 0},
-                            {x: waypoint.x, y: waypoint.y},
-                        ))}</p>
+                        <p>{waypoint.traits.map(trait => trait.name + ',')}</p>
+                        <p>Distance - {Math.round(getDistanceToWaypoint(ship, waypoint))}</p>
+                        <p>Will arrive: {getArrivalTime(ship, waypoint)}</p>
                     </li>
                 ))}
             </ul>

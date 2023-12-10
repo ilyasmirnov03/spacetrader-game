@@ -7,11 +7,17 @@ import {Dashboard} from './components/dashboard/root/Dashboard.tsx';
 import {Ships} from './components/dashboard/ships/Ships.tsx';
 import {Ship} from './components/dashboard/ships/ship/Ship.tsx';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {faArrowRightFromBracket, faChartSimple, faRocket} from '@fortawesome/free-solid-svg-icons';
+import {
+    faAnchor,
+    faAnglesRight,
+    faArrowRightFromBracket,
+    faChartSimple,
+    faRocket, faSatellite
+} from '@fortawesome/free-solid-svg-icons';
 import {AuthContextProvider} from './providers/auth/AuthContextProvider.tsx';
 
 // Init icons
-library.add(faRocket, faChartSimple, faArrowRightFromBracket);
+library.add(faRocket, faChartSimple, faArrowRightFromBracket, faAnchor, faAnglesRight, faSatellite);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
