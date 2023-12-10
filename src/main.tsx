@@ -15,6 +15,7 @@ import {
     faRocket, faSatellite
 } from '@fortawesome/free-solid-svg-icons';
 import {AuthContextProvider} from './providers/auth/AuthContextProvider.tsx';
+import {ShipContextProvider} from './providers/ship/ShipContextProvider.tsx';
 
 // Init icons
 library.add(faRocket, faChartSimple, faArrowRightFromBracket, faAnchor, faAnglesRight, faSatellite, faCoins);
@@ -28,7 +29,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     <Route path="/" element={<App/>}>
                         <Route path="/dashboard" element={<Dashboard/>}></Route>
                         <Route path="/ships" element={<Ships/>}></Route>
-                        <Route path="/ships/:shipId" element={<ShipDetails/>}></Route>
+                        <Route path="/ships/:shipId" element={
+                            <ShipContextProvider>
+                                <ShipDetails></ShipDetails>
+                            </ShipContextProvider>
+                        }></Route>
                     </Route>
                 </Routes>
             </AuthContextProvider>
