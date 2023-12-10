@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import "./ships.css";
 import {url} from '../../../constants/url.const.ts';
 import {useAuth} from '../../../hooks/auth/useAuth.tsx';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 interface ShipsProps { }
 
@@ -39,8 +40,8 @@ export const Ships: FC<ShipsProps> = () => {
                 {ships?.map(ship => (
                     <article key={ship.symbol}>
                         <h3 className="title-2xl">{ship.symbol}</h3>
-                        <p>Fuel: {ship.fuel.current} / {ship.fuel.capacity}</p>
-                        <progress value={ship.fuel.current} max={ship.fuel.capacity}></progress>
+                        <p><FontAwesomeIcon icon="gas-pump"/> {ship.fuel.current} / {ship.fuel.capacity}</p>
+                        <progress className='fuel' value={ship.fuel.current} max={ship.fuel.capacity}></progress>
                         <footer>
                             <Link className="button" to={`/ships/${ship.symbol}`} state={{ ship }}>Ship details</Link>
                         </footer>

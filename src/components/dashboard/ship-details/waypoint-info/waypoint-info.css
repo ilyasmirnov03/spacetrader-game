@@ -6,7 +6,7 @@
 .tradeGood {
     padding: 1rem;
     border-radius: var(--border-radius);
-    background-color: var(--color-primary-lighter);
+    background-color: var(--color-primary-dark-lighter);
     display: flex;
     flex-direction: column;
     gap: .5rem;

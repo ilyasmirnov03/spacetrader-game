@@ -3,3 +3,21 @@
     flex-wrap: wrap;
     gap: 1rem;
 }
+
+progress.fuel {
+    border: none;
+    background-color: var(--color-primary-dark-lighter);
+    border-radius: var(--border-radius);
+}
+
+progress.fuel::-webkit-progress-bar {
+    background-color: var(--color-primary);
+}
+
+progress.fuel::-webkit-progress-value {
+    background-color: var(--color-primary);
+}
+
+progress.fuel::-moz-progress-bar {
+    background-color: var(--color-primary);
+}

@@ -6,6 +6,7 @@ import {getArrivalTime} from '../../../utils/ship/getArrivalTime.ts';
 import {getDistanceToWaypoint} from '../../../utils/ship/getDistanceToWaypoint.ts';
 import {WaypointInfo} from './waypoint-info/WaypointInfo.tsx';
 import {useShip} from '../../../hooks/ship/useShip.ts';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 export const ShipDetails: FC = () => {
 
@@ -18,8 +19,8 @@ export const ShipDetails: FC = () => {
                 {shipNavStatusTransform(shipContext.ship)}
                 <p>Flight mode: {shipContext.ship?.nav.flightMode}</p>
             </header>
-            <p>Fuel: {shipContext.ship?.fuel.current} / {shipContext.ship?.fuel.capacity}</p>
-            <progress value={shipContext.ship?.fuel.current} max={shipContext.ship?.fuel.capacity}></progress>
+            <p><FontAwesomeIcon icon="gas-pump"/> {shipContext.ship?.fuel.current} / {shipContext.ship?.fuel.capacity}</p>
+            <progress className='fuel' value={shipContext.ship?.fuel.current} max={shipContext.ship?.fuel.capacity}></progress>
             <WaypointInfo ship={shipContext.ship}/>
             <button disabled={!shipCanPerformAction(shipContext.ship, shipContext.cooldown ?? 0)} className="button"
                     onClick={shipContext.scanWaypoints}>Scan nearby waypoints
