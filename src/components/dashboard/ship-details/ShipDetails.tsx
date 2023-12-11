@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FC} from 'react';
 import { shipNavStatusTransform } from '../../../utils/ship/shipNavStatusTransform.tsx';
 import { WaypointInfo } from './waypoint-info/WaypointInfo.tsx';
 import { useShip } from '../../../hooks/ship/useShip.ts';
@@ -11,6 +11,14 @@ export const ShipDetails: FC = () => {
 
     const shipContext = useShip();
 
+    function getOppositeNavStatus(): string {
+        return shipContext.nav?.status === 'IN_ORBIT' ? 'dock' : 'orbit';
+    }
+
+    function toggleNavStatus() {
+        shipContext.toggleShipNavStatus(getOppositeNavStatus());
+    }
+
     return (
         <section>
             <header className="mb-10">
@@ -18,7 +26,11 @@ export const ShipDetails: FC = () => {
                     <h2 className="title-3xl">{shipContext.ship?.symbol} - Cooldown {shipContext.cooldown}s</h2>
                     <button className="icon"><FontAwesomeIcon icon="rotate-right" /></button>
                 </div>
-                {shipNavStatusTransform(shipContext.nav)}
+                <div className="flex">
+                    {shipNavStatusTransform(shipContext.nav)}
+                    {shipContext.nav?.status !== 'IN_TRANSIT' &&
+                        <button className="button" onClick={toggleNavStatus}>{getOppositeNavStatus()}</button>}
+                </div>
                 <p>Flight mode: {shipContext.nav?.flightMode}</p>
             </header>
             <Fuel />

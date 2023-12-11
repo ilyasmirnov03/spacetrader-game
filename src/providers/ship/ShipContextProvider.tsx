@@ -7,6 +7,7 @@ import { Waypoint, WaypointResponse } from '../../models/waypoint.model.ts';
 import { callApi } from '../../utils/api/api-caller.ts';
 import { NavigateResponse } from '../../models/api-response/navigate-response.ts';
 import { ExtractResourcesResponse } from '../../models/api-response/extract-resources-response.ts';
+import {StatusChangeResponse} from '../../models/api-response/status-change-response.ts';
 
 interface ShipContextProviderProps {
     children: ReactElement;
@@ -104,6 +105,13 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             });
     }
 
+    function toggleShipNavStatus(status: string): void {
+        callApi<StatusChangeResponse>(`/my/ships/${ship?.symbol}/${status}`, auth.token, 'post')
+            .then((res) => {
+                setNav(res.data.nav);
+            });
+    }
+
     return <ShipContext.Provider value={{
         ship,
         waypoints,
@@ -113,7 +121,8 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
         fuel,
         nav,
         cargo,
-        extractResources
+        extractResources,
+        toggleShipNavStatus,
     }}>
         {children}
     </ShipContext.Provider>;
