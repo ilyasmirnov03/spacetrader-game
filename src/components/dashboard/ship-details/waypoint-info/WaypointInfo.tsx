@@ -1,19 +1,17 @@
-import {FC, useCallback, useEffect, useState} from 'react';
-import {Nav} from '../../../../models/ship.model.ts';
-import axios from 'axios';
-import {url} from '../../../../constants/url.const.ts';
-import {Waypoint} from '../../../../models/waypoint.model.ts';
-import {ApiResponse} from '../../../../models/api-response/api-response.ts';
-import {Market} from '../../../../models/market.model.ts';
-import {useAuth} from '../../../../hooks/auth/useAuth.tsx';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { Nav } from '../../../../models/ship.model.ts';
+import { Waypoint } from '../../../../models/waypoint.model.ts';
+import { Market } from '../../../../models/market.model.ts';
+import { useAuth } from '../../../../hooks/auth/useAuth.tsx';
 import "./waypoint-info.css";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { callApi } from '../../../../utils/api/api-caller.ts';
 
 interface WaypointInfoProps {
     nav: Nav | undefined,
 }
 
-export const WaypointInfo: FC<WaypointInfoProps> = ({nav}) => {
+export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
     const [waypoint, setWaypoint] = useState<Waypoint>();
     const [marketplace, setMarketplace] = useState<Market>();
 
@@ -23,23 +21,16 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({nav}) => {
         if (!nav) {
             return;
         }
-        axios.get(`${url}/systems/${nav.systemSymbol}/waypoints/${nav.waypointSymbol}`)
-            .then((data) => {
-                const response = data.data as ApiResponse<Waypoint>;
-                setWaypoint(response.data);
-            });
-    }, [nav]);
+        callApi<Waypoint>(`/systems/${nav.systemSymbol}/waypoints/${nav.waypointSymbol}`, auth.token)
+            .then((res) => {
+                setWaypoint(res.data);
+            })
+    }, [nav, auth.token]);
 
     function getMarketplaceInfo(): void {
-        axios.get(`${url}/systems/${nav?.systemSymbol}/waypoints/${nav?.waypointSymbol}/market`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${auth.token}`
-            }
-        })
-            .then((data) => {
-                const response = data.data as ApiResponse<Market>;
-                setMarketplace(response.data);
+        callApi<Market>(`/systems/${nav?.systemSymbol}/waypoints/${nav?.waypointSymbol}/market`, auth.token)
+            .then((res) => {
+                setMarketplace(res.data);
             });
     }
 
@@ -64,8 +55,8 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({nav}) => {
                     <li key={good.symbol} className="tradeGood">
                         <p>{good.symbol} - {good.type}</p>
                         <p>Supply: {good.supply}</p>
-                        <p>Sell: {good.sellPrice}<FontAwesomeIcon icon="coins"/></p>
-                        <p>Buy: {good.purchasePrice}<FontAwesomeIcon icon="coins"/></p>
+                        <p>Sell: {good.sellPrice}<FontAwesomeIcon icon="coins" /></p>
+                        <p>Buy: {good.purchasePrice}<FontAwesomeIcon icon="coins" /></p>
                     </li>
                 ))}
             </ul>

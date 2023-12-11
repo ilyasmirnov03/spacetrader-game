@@ -1,17 +1,15 @@
-import {ReactElement, useCallback, useEffect, useState} from 'react';
-import {useNavigate} from 'react-router';
-import axios from 'axios';
-import {LocalStorageEnum} from '../../enum/local-storage.enum.ts';
-import {ApiResponse} from '../../models/api-response/api-response.ts';
-import {AuthContext} from '../../hooks/auth/AuthContext.ts';
-import {url} from '../../constants/url.const.ts';
-import {AgentInfoModel} from '../../models/agent-info.model.ts';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { LocalStorageEnum } from '../../enum/local-storage.enum.ts';
+import { AuthContext } from '../../hooks/auth/AuthContext.ts';
+import { AgentInfoModel } from '../../models/agent-info.model.ts';
+import { callApi } from '../../utils/api/api-caller.ts';
 
 interface AuthContextProviderProps {
     children: ReactElement;
 }
 
-export function AuthContextProvider({children}: AuthContextProviderProps) {
+export function AuthContextProvider({ children }: AuthContextProviderProps) {
     const [token, setToken] = useState<string | null>(localStorage.getItem(LocalStorageEnum.LOGIN_KEY));
     const [agent, setAgent] = useState<AgentInfoModel>();
 
@@ -29,21 +27,15 @@ export function AuthContextProvider({children}: AuthContextProviderProps) {
 
     // Get agent using token in arguments
     const login = useCallback((typedToken: string, goTo: string = window.location.pathname) => {
-        axios.get(`${url}/my/agent`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${typedToken}`
-            },
-        }).then((data) => {
-            localStorage.setItem(LocalStorageEnum.LOGIN_KEY, typedToken);
-            if (token == null) {
-                setToken(typedToken);
-            }
-            setAgent((data.data as ApiResponse).data as AgentInfoModel);
-            redirectFromPathname(goTo);
-        }).catch(err => {
-            console.error(err);
-        });
+        callApi<AgentInfoModel>('/my/agent', typedToken)
+            .then((res) => {
+                localStorage.setItem(LocalStorageEnum.LOGIN_KEY, typedToken);
+                if (token == null) {
+                    setToken(typedToken);
+                }
+                setAgent(res.data);
+                redirectFromPathname(goTo);
+            });
     }, [redirectFromPathname, token]);
 
     function logout(): void {

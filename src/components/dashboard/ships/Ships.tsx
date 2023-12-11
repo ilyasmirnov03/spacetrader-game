@@ -1,12 +1,10 @@
-import axios from "axios";
-import {FC, useCallback, useEffect, useState} from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { ShipModel } from "../../../models/ship.model.ts";
-import { ApiResponse } from "../../../models/api-response/api-response.ts";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import "./ships.css";
-import {url} from '../../../constants/url.const.ts';
-import {useAuth} from '../../../hooks/auth/useAuth.tsx';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { useAuth } from '../../../hooks/auth/useAuth.tsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { callApi } from "../../../utils/api/api-caller.ts";
 
 interface ShipsProps { }
 
@@ -17,14 +15,10 @@ export const Ships: FC<ShipsProps> = () => {
     const auth = useAuth();
 
     const getShips = useCallback(() => {
-        axios.get(`${url}/my/ships`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${auth.token}`
-            },
-        }).then((data) => {
-            setShips((data.data as ApiResponse).data as ShipModel[]);
-        });
+        callApi<ShipModel[]>(`/my/ships`, auth.token)
+            .then((res) => {
+                setShips(res.data);
+            });
     }, [auth.token]);
 
     useEffect(() => {
@@ -40,7 +34,7 @@ export const Ships: FC<ShipsProps> = () => {
                 {ships?.map(ship => (
                     <article key={ship.symbol}>
                         <h3 className="title-2xl">{ship.symbol}</h3>
-                        <p><FontAwesomeIcon icon="gas-pump"/> {ship.fuel.current} / {ship.fuel.capacity}</p>
+                        <p><FontAwesomeIcon icon="gas-pump" /> {ship.fuel.current} / {ship.fuel.capacity}</p>
                         <progress className='fuel' value={ship.fuel.current} max={ship.fuel.capacity}></progress>
                         <footer>
                             <Link className="button" to={`/ships/${ship.symbol}`} state={{ ship }}>Ship details</Link>
