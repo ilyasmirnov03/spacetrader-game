@@ -10,7 +10,10 @@ const multiplier: {[key in FlightMode]: number} = {
     'STEALTH': 30
 }
 
-export function getArrivalTime(ship: ShipModel | undefined, waypoint: Waypoint): string {
+export function getArrivalTime(ship: ShipModel | undefined, waypoint: Waypoint): string | undefined {
+    if (!ship) {
+        return;
+    }
     const secondsToArrival = Math.round(
         Math.round(
             Math.max(1, Math.round(getDistanceToWaypoint(ship, waypoint)))
