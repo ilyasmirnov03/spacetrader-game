@@ -6,6 +6,7 @@ import { useAuth } from '../../../../hooks/auth/useAuth.tsx';
 import "./waypoint-info.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { callApi } from '../../../../utils/api/api-caller.ts';
+import { useShip } from '../../../../hooks/ship/useShip.ts';
 
 interface WaypointInfoProps {
     nav: Nav | undefined,
@@ -16,6 +17,7 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
     const [marketplace, setMarketplace] = useState<Market>();
 
     const auth = useAuth();
+    const shipContext = useShip();
 
     const getLocation = useCallback(() => {
         if (!nav) {
@@ -38,6 +40,18 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
         return Boolean(waypoint?.traits.some(trait => trait.symbol === 'MARKETPLACE'));
     }
 
+    function canMine(): boolean {
+        if (!waypoint) {
+            return false;
+        }
+        const waypointTypes = [
+            "ASTEROID",
+            "ASTEROID_FIELD",
+            "ENGINEERED_ASTEROID"
+        ];
+        return waypointTypes.includes(waypoint.type);
+    }
+
     useEffect(() => {
         getLocation();
     }, [getLocation]);
@@ -50,6 +64,8 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
             <p>{waypoint?.traits.map(trait => trait.name + ', ')}</p>
             {hasMarketplace() &&
                 <button className="button" onClick={getMarketplaceInfo}>Get marketplace info</button>}
+            {canMine() &&
+                <button className='button' onClick={shipContext.extractResources}>Extract resources</button>}
             <ul className="tradeGoods">
                 {marketplace?.tradeGoods?.map(good => (
                     <li key={good.symbol} className="tradeGood">

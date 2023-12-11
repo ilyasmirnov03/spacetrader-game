@@ -6,7 +6,8 @@ interface ShipContextInterface {
     ship: ShipModel | undefined;
     waypoints: Waypoint[];
     scanWaypoints: () => void
-    navigateToWaypoint: (w: Waypoint) => void
+    navigateToWaypoint: (w: Waypoint) => void,
+    extractResources: () => void,
     cooldown: number,
     fuel: Fuel | undefined,
     nav: Nav | undefined,
@@ -21,6 +22,7 @@ export const ShipContext = createContext<ShipContextInterface>({
     },
     navigateToWaypoint: () => {
     },
+    extractResources: () => { },
     cooldown: 0,
     nav: undefined,
     cargo: undefined,
