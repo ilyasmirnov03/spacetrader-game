@@ -1,15 +1,12 @@
-import { FC, FormEvent } from 'react';
-import axios from 'axios';
-import { LocalStorageEnum } from '../../../enum/local-storage.enum';
-import { useNavigate } from 'react-router';
-import { ApiResponse } from '../../../models/api-response.ts';
-import environment from '../../../constants/environment.const.ts';
+import {FC, FormEvent} from 'react';
+import {useAuth} from '../../../hooks/auth/useAuth.tsx';
+import {Link} from 'react-router-dom';
 
 interface LoginProps {
 }
 
 export const Login: FC<LoginProps> = () => {
-    const navigate = useNavigate();
+    const auth = useAuth();
 
     // Typed token in input
     let token = '';
@@ -20,28 +17,22 @@ export const Login: FC<LoginProps> = () => {
 
     function login(e: FormEvent): void {
         e.preventDefault();
-        axios.get(`${environment.baseUrl}/my/agent`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-        }).then((data) => {
-            localStorage.setItem(LocalStorageEnum.LOGIN_KEY, token);
-            localStorage.setItem(LocalStorageEnum.AGENT, JSON.stringify((data.data as ApiResponse).data));
-            environment.loginToken = token;
-            navigate('/dashboard');
-        }).catch(err => {
-            console.error(err);
-        });
+        auth.login(token, '/');
     }
 
     return (
         <div>
             <form onSubmit={login}>
                 <input onInput={(e) => setToken(e.currentTarget.value)} type="text" name="token"
-                    placeholder="Place or type or token here" />
-                <input type="submit" value={'Login'} />
+                       placeholder="Place or type or token here"/>
+                <input type="submit" value={'Login'}/>
             </form>
+            {auth.token && (
+                <>
+                    <p>You are already logged in.</p>
+                    <Link className="button" to="/dashboard">Go to dashboard</Link>
+                </>
+            )}
         </div>
     );
 };

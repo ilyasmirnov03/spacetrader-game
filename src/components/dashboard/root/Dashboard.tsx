@@ -1,20 +1,13 @@
-import {FC, useEffect, useState} from 'react';
-import {LocalStorageEnum} from '../../../enum/local-storage.enum.ts';
+import {FC} from 'react';
 import {AgentInfoModel} from '../../../models/agent-info.model.ts';
 import './dashboard.css';
+import {useAuth} from '../../../hooks/auth/useAuth.tsx';
 
 interface DashboardProps { }
 
 export const Dashboard: FC<DashboardProps> = () => {
 
-    const [agent, setAgent] = useState<AgentInfoModel | null>(null);
-    const storageAgent = localStorage.getItem(LocalStorageEnum.AGENT);
-
-    useEffect(() => {
-        if (storageAgent != null) {
-            setAgent(JSON.parse(storageAgent));
-        }
-    }, [storageAgent]);
+    const auth = useAuth();
 
     return (
         <>
@@ -23,8 +16,8 @@ export const Dashboard: FC<DashboardProps> = () => {
             <section>
                 <h3 className="title-2xl">Agent info</h3>
                 <ul className="dashboard">
-                    {Object.keys(agent ?? {}).map((key, i) => (
-                        <li className="dashboard__item" key={i}><b>{key}:</b> {agent ? agent[key as keyof AgentInfoModel] : ''}</li>
+                    {Object.keys(auth.agent ?? {}).map((key, i) => (
+                        <li className="dashboard__item" key={i}><b>{key}:</b> {auth.agent ? auth.agent[key as keyof AgentInfoModel] : ''}</li>
                     ))}
                 </ul>
             </section>

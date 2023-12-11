@@ -4,7 +4,7 @@ interface MetaResponse {
     page: number;
     limit: number;
 }
-export interface ApiResponse {
-    data: unknown;
+export interface ApiResponse<T> {
+    data: T;
     meta?: MetaResponse;
 }

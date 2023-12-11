@@ -1,4 +1,4 @@
-import {Cooldown} from './cooldown.model.ts';
+import { Cooldown } from './cooldown.model.ts';
 
 interface Route {
     symbol: string;
@@ -16,12 +16,16 @@ interface NavRoute {
     departureTime: string;
 }
 
-interface Nav {
+export type NavStatus = 'IN_TRANSIT' | 'IN_ORBIT' | 'DOCKED';
+
+export type FlightMode = 'CRUISE' | 'DRIFT' | 'BURN' | 'STEALTH';
+
+export interface Nav {
     systemSymbol: string;
     waypointSymbol: string;
     route: NavRoute;
-    status: string;
-    flightMode: string;
+    status: NavStatus;
+    flightMode: FlightMode;
 }
 
 interface Crew {
@@ -38,7 +42,7 @@ interface FuelConsumed {
     timestamp: string;
 }
 
-interface Fuel {
+export interface Fuel {
     current: number;
     capacity: number;
     consumed: FuelConsumed;
@@ -73,10 +77,10 @@ interface Registration {
     role: string;
 }
 
-interface Cargo {
+export interface Cargo {
     capacity: number;
     units: number;
-    inventory: unknown[];
+    inventory: CargoInventory[];
 }
 
 interface Frame {
@@ -106,6 +110,13 @@ interface Engine {
     condition: number;
     speed: number;
     requirements: Requirements;
+}
+
+export interface CargoInventory {
+    symbol: string;
+    name: string;
+    description: string;
+    units: number;
 }
 
 export interface ShipModel {
