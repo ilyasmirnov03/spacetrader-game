@@ -7,8 +7,8 @@ export const Cargo: FC<CargoProps> = () => {
     const shipContext = useShip();
 
     return (
-        <section>
-            <header className="mb-10">
+        <article className="tab vertical-flex-layout">
+            <header>
                 <h2 className="title-3xl">Cargo</h2>
             </header>
             <p>{shipContext.cargo?.units} / {shipContext.cargo?.capacity}</p>
@@ -17,6 +17,6 @@ export const Cargo: FC<CargoProps> = () => {
                     <li key={inventory.symbol}>{inventory.symbol}: {inventory.units}</li>
                 ))}
             </ul>
-        </section>
+        </article>
     );
 }

@@ -11,14 +11,15 @@ export const Waypoints: FC<WaypointsProps> = () => {
     const shipContext = useShip();
 
     return (
-        <article>
+        <article className="shipWaypoints vertical-flex-layout">
             <button disabled={!shipCanPerformAction(shipContext.ship, shipContext.cooldown ?? 0)} className="button"
                 onClick={shipContext.scanWaypoints}>Scan nearby waypoints
             </button>
+            {shipContext.waypoints.length === 0 && <p>Waypoints haven't been scanned.</p>}
             {/* Waypoints holder */}
-            <ul className="ship__waypoints">
+            <ul className="shipWaypoints__container">
                 {shipContext.waypoints?.map(waypoint => (
-                    <li className="ship__waypoint tab" key={waypoint.symbol}>
+                    <li className="shipWaypoints__waypoint tab" key={waypoint.symbol}>
                         <p>{waypoint.type} {waypoint.symbol}</p>
                         <p>{waypoint.traits.map(trait => trait.name + ',')}</p>
                         <p>Distance - {Math.round(getDistanceToWaypoint(shipContext.ship, waypoint))}</p>

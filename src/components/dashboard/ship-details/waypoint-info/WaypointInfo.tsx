@@ -1,12 +1,13 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Nav } from '../../../../models/ship.model.ts';
-import { Waypoint } from '../../../../models/waypoint.model.ts';
+import {Waypoint} from '../../../../models/waypoint.model.ts';
 import { Market } from '../../../../models/market.model.ts';
 import { useAuth } from '../../../../hooks/auth/useAuth.tsx';
 import "./waypoint-info.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { callApi } from '../../../../utils/api/api-caller.ts';
 import { useShip } from '../../../../hooks/ship/useShip.ts';
+import {mineableWaypointTypes} from '../../../../constants/mineableWaypointTypes.ts';
 
 interface WaypointInfoProps {
     nav: Nav | undefined,
@@ -44,12 +45,7 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
         if (!waypoint) {
             return false;
         }
-        const waypointTypes = [
-            "ASTEROID",
-            "ASTEROID_FIELD",
-            "ENGINEERED_ASTEROID"
-        ];
-        return waypointTypes.includes(waypoint.type);
+        return mineableWaypointTypes.includes(waypoint.type);
     }
 
     function canSell(symbol: string): boolean {
@@ -61,8 +57,8 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
     }, [getLocation]);
 
     return (
-        <article>
-            <header className="mb-10">
+        <article className="tab vertical-flex-layout">
+            <header>
                 <h2 className="title-3xl">{waypoint?.type} - {waypoint?.symbol}</h2>
             </header>
             <p>{waypoint?.traits.map(trait => trait.name + ', ')}</p>

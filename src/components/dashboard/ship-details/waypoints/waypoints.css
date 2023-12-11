@@ -1,11 +1,15 @@
-.ship__waypoints {
+.shipWaypoints {
+    width: 100%;
+}
+
+.shipWaypoints__container {
     display: flex;
     overflow-x: scroll;
     gap: 1rem;
     padding: 1rem 0;
 }
 
-.ship__waypoint {
+.shipWaypoints__waypoint {
     display: flex;
     flex-direction: column;
     gap: .5rem;

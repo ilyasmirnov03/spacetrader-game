@@ -8,6 +8,7 @@ progress.fuel {
     border: none;
     background-color: var(--color-primary-dark-lighter);
     border-radius: var(--border-radius);
+    width: fit-content;
 }
 
 progress.fuel::-webkit-progress-bar {

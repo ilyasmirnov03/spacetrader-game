@@ -8,9 +8,9 @@ export const Fuel: FC<FuelProps> = () => {
     const shipContext = useShip();
 
     return (
-        <article>
+        <>
             <p><FontAwesomeIcon icon="gas-pump" /> {shipContext.fuel?.current} / {shipContext.fuel?.capacity}</p>
             <progress className='fuel' value={shipContext.fuel?.current} max={shipContext.fuel?.capacity}></progress>
-        </article>
+        </>
     );
 }

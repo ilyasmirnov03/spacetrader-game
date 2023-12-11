@@ -15,9 +15,13 @@ interface Chart {
     submittedOn: string;
 }
 
+// Used waypoint types
+export type WaypointType = 'PLANET' | 'JUMP_GATE' | 'FUEL_STATION' | 'ASTEROID_FIELD' | 'ASTEROID' | 'ENGINEERED_ASTEROID'
+    | 'ASTEROID_BASE';
+
 export interface Waypoint {
     symbol: string;
-    type: string;
+    type: WaypointType;
     systemSymbol: string;
     x: number;
     y: number;
