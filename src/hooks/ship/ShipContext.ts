@@ -1,6 +1,6 @@
-import {createContext} from 'react';
-import {Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
-import {Waypoint} from '../../models/waypoint.model.ts';
+import { createContext } from 'react';
+import { Cargo, Fuel, Nav, ShipModel } from '../../models/ship.model.ts';
+import { Waypoint } from '../../models/waypoint.model.ts';
 
 interface ShipContextInterface {
     ship: ShipModel | undefined;
@@ -10,6 +10,7 @@ interface ShipContextInterface {
     cooldown: number,
     fuel: Fuel | undefined,
     nav: Nav | undefined,
+    cargo: Cargo | undefined,
 }
 
 export const ShipContext = createContext<ShipContextInterface>({
@@ -22,4 +23,5 @@ export const ShipContext = createContext<ShipContextInterface>({
     },
     cooldown: 0,
     nav: undefined,
+    cargo: undefined,
 });

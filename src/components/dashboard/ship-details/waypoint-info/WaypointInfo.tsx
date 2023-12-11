@@ -43,7 +43,7 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
     }, [getLocation]);
 
     return (
-        <section>
+        <article>
             <header className="mb-10">
                 <h2 className="title-3xl">{waypoint?.type} - {waypoint?.symbol}</h2>
             </header>
@@ -60,6 +60,6 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
                     </li>
                 ))}
             </ul>
-        </section>
+        </article>
     );
 };

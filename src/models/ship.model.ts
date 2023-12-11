@@ -1,4 +1,4 @@
-import {Cooldown} from './cooldown.model.ts';
+import { Cooldown } from './cooldown.model.ts';
 
 interface Route {
     symbol: string;
@@ -77,7 +77,7 @@ interface Registration {
     role: string;
 }
 
-interface Cargo {
+export interface Cargo {
     capacity: number;
     units: number;
     inventory: CargoInventory[];

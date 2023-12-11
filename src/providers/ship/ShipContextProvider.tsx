@@ -1,24 +1,24 @@
-import {ReactElement, useCallback, useEffect, useState} from 'react';
-import {useAuth} from '../../hooks/auth/useAuth.tsx';
-import {useLocation, useParams} from 'react-router-dom';
-import {ShipContext} from '../../hooks/ship/ShipContext.ts';
-import {Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
-import {Waypoint, WaypointResponse} from '../../models/waypoint.model.ts';
-import {callApi} from '../../utils/api/api-caller.ts';
-import {NavigateResponse} from '../../models/api-response/navigate-response.ts';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useAuth } from '../../hooks/auth/useAuth.tsx';
+import { useLocation, useParams } from 'react-router-dom';
+import { ShipContext } from '../../hooks/ship/ShipContext.ts';
+import { Cargo, Fuel, Nav, ShipModel } from '../../models/ship.model.ts';
+import { Waypoint, WaypointResponse } from '../../models/waypoint.model.ts';
+import { callApi } from '../../utils/api/api-caller.ts';
+import { NavigateResponse } from '../../models/api-response/navigate-response.ts';
 
 interface ShipContextProviderProps {
     children: ReactElement;
 }
 
-export function ShipContextProvider({children}: ShipContextProviderProps) {
+export function ShipContextProvider({ children }: ShipContextProviderProps) {
     const auth = useAuth();
 
     // State passed from clicked button, can be undefined if request didn't come from button click
-    const {state} = useLocation();
+    const { state } = useLocation();
 
     // Id from url params
-    const {shipId} = useParams();
+    const { shipId } = useParams();
 
     // State
     const [ship, setShip] = useState<ShipModel>();
@@ -26,12 +26,14 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
     const [cooldown, setCooldown] = useState<number>(0);
     const [fuel, setFuel] = useState<Fuel>();
     const [nav, setNav] = useState<Nav>();
+    const [cargo, setCargo] = useState<Cargo>()
 
     function updateShip(ship: ShipModel | undefined) {
         setShip(ship);
         setFuel(ship?.fuel);
         setNav(ship?.nav);
         setCooldown(ship?.cooldown.remainingSeconds ?? 0);
+        setCargo(ship?.cargo);
     }
 
     const getShip = useCallback(() => {
@@ -100,7 +102,8 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
         cooldown,
         navigateToWaypoint,
         fuel,
-        nav
+        nav,
+        cargo
     }}>
         {children}
     </ShipContext.Provider>;
