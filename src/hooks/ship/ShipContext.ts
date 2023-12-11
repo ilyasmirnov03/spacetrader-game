@@ -5,20 +5,24 @@ import {Waypoint} from '../../models/waypoint.model.ts';
 interface ShipContextInterface {
     ship: ShipModel | undefined;
     waypoints: Waypoint[];
+    fuel: Fuel | undefined,
+    cooldown: number,
+    nav: Nav | undefined,
+    cargo: Cargo | undefined,
     scanWaypoints: () => void
     navigateToWaypoint: (w: Waypoint) => void,
     extractResources: () => void,
     toggleShipNavStatus: (s: string) => void,
-    cooldown: number,
-    fuel: Fuel | undefined,
-    nav: Nav | undefined,
-    cargo: Cargo | undefined,
+    sellCargo: (s: string) => void,
 }
 
 export const ShipContext = createContext<ShipContextInterface>({
     ship: undefined,
     fuel: undefined,
     waypoints: [],
+    cooldown: 0,
+    nav: undefined,
+    cargo: undefined,
     scanWaypoints: () => {
     },
     navigateToWaypoint: () => {
@@ -27,7 +31,6 @@ export const ShipContext = createContext<ShipContextInterface>({
     },
     toggleShipNavStatus: () => {
     },
-    cooldown: 0,
-    nav: undefined,
-    cargo: undefined,
+    sellCargo: () => {
+    },
 });

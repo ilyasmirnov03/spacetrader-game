@@ -6,6 +6,7 @@ interface AuthContextInterface {
     agent: AgentInfoModel | undefined,
     login: (token: string, goTo: string) => void,
     logout: () => void,
+    setAgentState: (agent: AgentInfoModel) => void,
 }
 
 export const AuthContext = createContext<AuthContextInterface>({
@@ -14,5 +15,7 @@ export const AuthContext = createContext<AuthContextInterface>({
     login: () => {
     },
     logout: () => {
+    },
+    setAgentState: () => {
     },
 });

@@ -52,6 +52,10 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
         return waypointTypes.includes(waypoint.type);
     }
 
+    function canSell(symbol: string): boolean {
+        return Boolean(shipContext.cargo?.inventory.some(inventory => inventory.symbol === symbol));
+    }
+
     useEffect(() => {
         getLocation();
     }, [getLocation]);
@@ -71,8 +75,14 @@ export const WaypointInfo: FC<WaypointInfoProps> = ({ nav }) => {
                     <li key={good.symbol} className="tradeGood">
                         <p>{good.symbol} - {good.type}</p>
                         <p>Supply: {good.supply}</p>
-                        <p>Sell: {good.sellPrice}<FontAwesomeIcon icon="coins" /></p>
-                        <p>Buy: {good.purchasePrice}<FontAwesomeIcon icon="coins" /></p>
+                        <div className="flex">
+                            <p>Sell: {good.sellPrice}<FontAwesomeIcon icon="coins" /></p>
+                            {canSell(good.symbol) &&
+                                <button className="button" onClick={() => shipContext.sellCargo(good.symbol)}>Sell</button>}
+                        </div>
+                        <div className="flex">
+                            <p>Buy: {good.purchasePrice}<FontAwesomeIcon icon="coins" /></p>
+                        </div>
                     </li>
                 ))}
             </ul>

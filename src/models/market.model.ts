@@ -4,7 +4,7 @@ interface TradeMaterial {
     description: string;
 }
 
-interface Transaction {
+export interface Transaction {
     waypointSymbol: string;
     shipSymbol: string;
     tradeSymbol: string;

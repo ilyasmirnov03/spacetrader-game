@@ -2,12 +2,13 @@ import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/auth/useAuth.tsx';
 import { useLocation, useParams } from 'react-router-dom';
 import { ShipContext } from '../../hooks/ship/ShipContext.ts';
-import { Cargo, Fuel, Nav, ShipModel } from '../../models/ship.model.ts';
+import {Cargo, Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
 import { Waypoint, WaypointResponse } from '../../models/waypoint.model.ts';
 import { callApi } from '../../utils/api/api-caller.ts';
 import { NavigateResponse } from '../../models/api-response/navigate-response.ts';
 import { ExtractResourcesResponse } from '../../models/api-response/extract-resources-response.ts';
 import {StatusChangeResponse} from '../../models/api-response/status-change-response.ts';
+import {SellCargoResponse} from '../../models/api-response/sell-cargo-response.ts';
 
 interface ShipContextProviderProps {
     children: ReactElement;
@@ -112,17 +113,33 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             });
     }
 
+    function sellCargo(symbol: string): void {
+        const cargoToSell = cargo?.inventory.find(inventory => inventory.symbol === symbol);
+        if (!cargoToSell) {
+            return;
+        }
+        callApi<SellCargoResponse>(`/my/ships/${ship?.symbol}/sell`, auth.token, 'post', {
+            symbol: symbol,
+            units: cargoToSell.units
+        })
+            .then((res) => {
+                setCargo(res.data.cargo);
+                auth.setAgentState(res.data.agent);
+            });
+    }
+
     return <ShipContext.Provider value={{
         ship,
         waypoints,
-        scanWaypoints,
         cooldown,
-        navigateToWaypoint,
         fuel,
         nav,
         cargo,
+        scanWaypoints,
+        navigateToWaypoint,
         extractResources,
         toggleShipNavStatus,
+        sellCargo,
     }}>
         {children}
     </ShipContext.Provider>;

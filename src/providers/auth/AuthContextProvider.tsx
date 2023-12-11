@@ -45,6 +45,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         navigate('/login');
     }
 
+    function setAgentState(agent: AgentInfoModel): void {
+        setAgent(agent);
+    }
+
     const attemptToAutoLogin = useCallback(() => {
         if (token && !agent) {
             login(token);
@@ -60,8 +64,9 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     return <AuthContext.Provider value={{
         token,
         login,
+        agent,
         logout,
-        agent
+        setAgentState,
     }}>
         {children}
     </AuthContext.Provider>;

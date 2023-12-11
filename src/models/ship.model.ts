@@ -112,7 +112,7 @@ interface Engine {
     requirements: Requirements;
 }
 
-interface CargoInventory {
+export interface CargoInventory {
     symbol: string;
     name: string;
     description: string;
