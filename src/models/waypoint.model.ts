@@ -1,5 +1,5 @@
-import {Trait} from './trait.model.ts';
-import {Cooldown} from './cooldown.model.ts';
+import { Trait } from './trait.model.ts';
+import { Cooldown } from './cooldown.model.ts';
 
 interface Orbital {
     symbol: string;
@@ -15,6 +15,12 @@ interface Chart {
     submittedOn: string;
 }
 
+interface Modifier {
+    symbol: string;
+    name: string;
+    description: string;
+}
+
 // Used waypoint types
 export type WaypointType = 'PLANET' | 'JUMP_GATE' | 'FUEL_STATION' | 'ASTEROID_FIELD' | 'ASTEROID' | 'ENGINEERED_ASTEROID'
     | 'ASTEROID_BASE';
@@ -28,7 +34,9 @@ export interface Waypoint {
     orbitals: Orbital[];
     faction: Faction;
     traits: Trait[];
-    chart: Chart;
+    chart?: Chart;
+    orbits?: string;
+    modifiers?: Modifier[];
     isUnderConstruction?: boolean;
 }
 
