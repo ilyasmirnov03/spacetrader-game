@@ -11,7 +11,7 @@ export const Marketplace: FC = () => {
     }
 
     return (
-        <article className="marketplace">
+        <article className="w-full">
             <h2 className="title-3xl mb-10">{shipContext.marketplace?.symbol} Market</h2>
             <ul className="longList">
                 {shipContext.marketplace?.tradeGoods?.map(good => (

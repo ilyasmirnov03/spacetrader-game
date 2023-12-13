@@ -89,6 +89,10 @@ body {
   margin-top: auto;
 }
 
+.w-full {
+  width: 100%;
+}
+
 /* Main layout
 */
 

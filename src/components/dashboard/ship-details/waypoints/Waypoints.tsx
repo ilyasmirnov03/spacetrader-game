@@ -3,7 +3,6 @@ import {shipCanPerformAction} from '../../../../utils/ship/shipCanPerformAction'
 import {useShip} from '../../../../hooks/ship/useShip';
 import {getDistanceToWaypoint} from '../../../../utils/ship/getDistanceToWaypoint';
 import {getArrivalTime} from '../../../../utils/ship/getArrivalTime';
-import './waypoints.css';
 
 interface WaypointsProps {
 }
@@ -13,7 +12,7 @@ export const Waypoints: FC<WaypointsProps> = () => {
     const shipContext = useShip();
 
     return (
-        <article className="shipWaypoints vertical-flex-layout">
+        <article className="w-full vertical-flex-layout">
             <button disabled={!shipCanPerformAction(shipContext.ship, shipContext.cooldown ?? 0)} className="button"
                     onClick={shipContext.scanWaypoints}>Scan nearby waypoints
             </button>

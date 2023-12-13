@@ -24,7 +24,7 @@ export const Shipyard: FC = () => {
     }
 
     return (
-        <article>
+        <article className="w-full">
             <header className="mb-10">
                 <h2 className="title-3xl">Shipyard {shipContext.shipyard?.symbol}</h2>
             </header>
