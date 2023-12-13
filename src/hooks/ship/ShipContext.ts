@@ -14,7 +14,7 @@ interface ShipContextInterface {
     marketplace: Market | undefined,
     shipyard: ShipyardResponse | undefined,
     scanWaypoints: () => void
-    navigateToWaypoint: (w: Waypoint) => void,
+    navigateToWaypoint: (s: string | undefined) => void,
     extractResources: () => void,
     toggleShipNavStatus: (s: string) => void,
     sellCargo: (s: string) => void,

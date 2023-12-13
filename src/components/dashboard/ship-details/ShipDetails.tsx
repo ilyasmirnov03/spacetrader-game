@@ -8,6 +8,7 @@ import {Waypoints} from './waypoints/Waypoints.tsx';
 import './ship-details.css';
 import {Marketplace} from './marketplace/Marketplace.tsx';
 import {Shipyard} from './shipyard/Shipyard.tsx';
+import {PreviousWaypoint} from './previous-waypoint/PreviousWaypoint.tsx';
 
 export const ShipDetails: FC = () => {
 
@@ -37,6 +38,7 @@ export const ShipDetails: FC = () => {
             </header>
             <WaypointInfo/>
             {(shipContext.ship?.cargo.capacity ?? 0) > 0 && <Cargo/>}
+            <PreviousWaypoint/>
             <Waypoints/>
             {shipContext.marketplace && <Marketplace/>}
             {shipContext.shipyard && <Shipyard/>}

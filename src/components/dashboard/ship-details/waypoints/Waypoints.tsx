@@ -26,7 +26,7 @@ export const Waypoints: FC<WaypointsProps> = () => {
                         <p>Distance - {Math.round(getDistanceToWaypoint(shipContext.ship, waypoint))}</p>
                         <p>Will arrive: {getArrivalTime(shipContext.ship, waypoint)}</p>
                         <button className="button bottom-anchored"
-                                onClick={() => shipContext.navigateToWaypoint(waypoint)}>
+                                onClick={() => shipContext.navigateToWaypoint(waypoint.symbol)}>
                             Navigate to waypoint
                         </button>
                     </li>

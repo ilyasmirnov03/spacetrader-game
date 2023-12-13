@@ -92,9 +92,9 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             });
     }
 
-    function navigateToWaypoint(waypoint: Waypoint): void {
+    function navigateToWaypoint(symbol: string | undefined): void {
         callApi<NavigateResponse>(`/my/ships/${ship?.symbol}/navigate`, auth.token, 'post', {
-            waypointSymbol: waypoint.symbol
+            waypointSymbol: symbol
         })
             .then((res) => {
                 setFuel(res.data.fuel);
