@@ -17,9 +17,9 @@ export const Waypoints: FC<WaypointsProps> = () => {
             </button>
             {shipContext.waypoints.length === 0 && <p>Waypoints haven't been scanned.</p>}
             {/* Waypoints holder */}
-            <ul className="shipWaypoints__container">
+            <ul className="longList">
                 {shipContext.waypoints?.map(waypoint => (
-                    <li className="shipWaypoints__waypoint tab" key={waypoint.symbol}>
+                    <li className="tab vertical-flex-layout" key={waypoint.symbol}>
                         <p>{waypoint.type} {waypoint.symbol}</p>
                         <p>{waypoint.traits.map(trait => trait.name + ',')}</p>
                         <p>Distance - {Math.round(getDistanceToWaypoint(shipContext.ship, waypoint))}</p>

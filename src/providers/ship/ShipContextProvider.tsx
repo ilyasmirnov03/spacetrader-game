@@ -9,6 +9,7 @@ import { NavigateResponse } from '../../models/api-response/navigate-response.ts
 import { ExtractResourcesResponse } from '../../models/api-response/extract-resources-response.ts';
 import {StatusChangeResponse} from '../../models/api-response/status-change-response.ts';
 import {SellCargoResponse} from '../../models/api-response/sell-cargo-response.ts';
+import {Market} from '../../models/market.model.ts';
 
 interface ShipContextProviderProps {
     children: ReactElement;
@@ -30,6 +31,7 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
     const [fuel, setFuel] = useState<Fuel>();
     const [nav, setNav] = useState<Nav>();
     const [cargo, setCargo] = useState<Cargo>()
+    const [marketplace, setMarketplace] = useState<Market>();
 
     function updateShip(ship: ShipModel | undefined) {
         setShip(ship);
@@ -128,6 +130,13 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             });
     }
 
+    function getMarketplaceInfo(): void {
+        callApi<Market>(`/systems/${nav?.systemSymbol}/waypoints/${nav?.waypointSymbol}/market`, auth.token)
+            .then((res) => {
+                setMarketplace(res.data);
+            });
+    }
+
     return <ShipContext.Provider value={{
         ship,
         waypoints,
@@ -135,11 +144,13 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
         fuel,
         nav,
         cargo,
+        marketplace,
         scanWaypoints,
         navigateToWaypoint,
         extractResources,
         toggleShipNavStatus,
         sellCargo,
+        getMarketplaceInfo,
     }}>
         {children}
     </ShipContext.Provider>;

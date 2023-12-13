@@ -1,16 +1,3 @@
 .shipWaypoints {
     width: 100%;
 }
-
-.shipWaypoints__container {
-    display: flex;
-    overflow-x: scroll;
-    gap: 1rem;
-    padding: 1rem 0;
-}
-
-.shipWaypoints__waypoint {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-}
