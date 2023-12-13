@@ -3,8 +3,8 @@ import { ShipModel } from "../../../models/ship.model.ts";
 import { Link } from 'react-router-dom';
 import "./ships.css";
 import { useAuth } from '../../../hooks/auth/useAuth.tsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { callApi } from "../../../utils/api/api-caller.ts";
+import {Fuel} from '../ship-details/fuel/Fuel.tsx';
 
 interface ShipsProps { }
 
@@ -32,10 +32,9 @@ export const Ships: FC<ShipsProps> = () => {
             </header>
             <div className="shipsContainer">
                 {ships?.map(ship => (
-                    <article key={ship.symbol}>
+                    <article key={ship.symbol} className="tab vertical-flex-layout">
                         <h3 className="title-2xl">{ship.symbol}</h3>
-                        <p><FontAwesomeIcon icon="gas-pump" /> {ship.fuel.current} / {ship.fuel.capacity}</p>
-                        <progress className='fuel' value={ship.fuel.current} max={ship.fuel.capacity}></progress>
+                        <Fuel ship={ship}/>
                         <footer>
                             <Link className="button" to={`/ships/${ship.symbol}`} state={{ ship }}>Ship details</Link>
                         </footer>

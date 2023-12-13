@@ -31,7 +31,7 @@ export const ShipDetails: FC = () => {
                         <button className="button" onClick={toggleNavStatus}>{getOppositeNavStatus()}</button>}
                 </div>
                 <p>Flight mode: {shipContext.nav?.flightMode}</p>
-                <Fuel/>
+                <Fuel ship={shipContext.ship}/>
             </header>
             <WaypointInfo nav={shipContext.nav}/>
             <Cargo/>
