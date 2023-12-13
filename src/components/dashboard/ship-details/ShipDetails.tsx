@@ -7,6 +7,7 @@ import {Fuel} from './fuel/Fuel.tsx';
 import {Waypoints} from './waypoints/Waypoints.tsx';
 import './ship-details.css';
 import {Marketplace} from './marketplace/Marketplace.tsx';
+import {Shipyard} from './shipyard/Shipyard.tsx';
 
 export const ShipDetails: FC = () => {
 
@@ -38,6 +39,7 @@ export const ShipDetails: FC = () => {
             {(shipContext.ship?.cargo.capacity ?? 0) > 0 && <Cargo/>}
             <Waypoints/>
             {shipContext.marketplace && <Marketplace/>}
+            {shipContext.shipyard && <Shipyard/>}
         </section>
     );
 };

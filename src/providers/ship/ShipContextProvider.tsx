@@ -10,6 +10,7 @@ import { ExtractResourcesResponse } from '../../models/api-response/extract-reso
 import {StatusChangeResponse} from '../../models/api-response/status-change-response.ts';
 import {SellCargoResponse} from '../../models/api-response/sell-cargo-response.ts';
 import {Market} from '../../models/market.model.ts';
+import {ShipyardResponse} from '../../models/api-response/shipyard-response.ts';
 
 interface ShipContextProviderProps {
     children: ReactElement;
@@ -32,12 +33,13 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
     const [nav, setNav] = useState<Nav>();
     const [cargo, setCargo] = useState<Cargo>()
     const [marketplace, setMarketplace] = useState<Market>();
+    const [shipyard, setShipyard] = useState<ShipyardResponse>();
 
     function updateShip(ship: ShipModel | undefined) {
         setShip(ship);
         setFuel(ship?.fuel);
         setNav(ship?.nav);
-        setCooldown(ship?.cooldown.remainingSeconds ?? 0);
+        setCooldown(ship?.cooldown?.remainingSeconds ?? 0);
         setCargo(ship?.cargo);
     }
 
@@ -137,6 +139,13 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             });
     }
 
+    function getShipyard(): void {
+        callApi<ShipyardResponse>(`/systems/${nav?.systemSymbol}/waypoints/${nav?.waypointSymbol}/shipyard`, auth.token)
+            .then(res => {
+                setShipyard(res.data);
+            });
+    }
+
     return <ShipContext.Provider value={{
         ship,
         waypoints,
@@ -145,12 +154,14 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
         nav,
         cargo,
         marketplace,
+        shipyard,
         scanWaypoints,
         navigateToWaypoint,
         extractResources,
         toggleShipNavStatus,
         sellCargo,
         getMarketplaceInfo,
+        getShipyard,
     }}>
         {children}
     </ShipContext.Provider>;

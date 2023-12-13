@@ -2,6 +2,7 @@ import {createContext} from 'react';
 import {Cargo, Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
 import {Waypoint} from '../../models/waypoint.model.ts';
 import {Market} from '../../models/market.model.ts';
+import {ShipyardResponse} from '../../models/api-response/shipyard-response.ts';
 
 interface ShipContextInterface {
     ship: ShipModel | undefined;
@@ -11,12 +12,14 @@ interface ShipContextInterface {
     nav: Nav | undefined,
     cargo: Cargo | undefined,
     marketplace: Market | undefined,
+    shipyard: ShipyardResponse | undefined,
     scanWaypoints: () => void
     navigateToWaypoint: (w: Waypoint) => void,
     extractResources: () => void,
     toggleShipNavStatus: (s: string) => void,
     sellCargo: (s: string) => void,
     getMarketplaceInfo: () => void,
+    getShipyard: () => void,
 }
 
 export const ShipContext = createContext<ShipContextInterface>({
@@ -27,6 +30,7 @@ export const ShipContext = createContext<ShipContextInterface>({
     nav: undefined,
     cargo: undefined,
     marketplace: undefined,
+    shipyard: undefined,
     scanWaypoints: () => {
     },
     navigateToWaypoint: () => {
@@ -38,5 +42,7 @@ export const ShipContext = createContext<ShipContextInterface>({
     sellCargo: () => {
     },
     getMarketplaceInfo: () => {
+    },
+    getShipyard: () => {
     },
 });

@@ -1,0 +1,9 @@
+.shipyard-ship {
+    max-width: 20rem;
+}
+
+.shipyard-ship__characteristics {
+    list-style: disc;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+}
