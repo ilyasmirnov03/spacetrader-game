@@ -1,29 +1,31 @@
-import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useAuth } from '../../hooks/auth/useAuth.tsx';
-import { useLocation, useParams } from 'react-router-dom';
-import { ShipContext } from '../../hooks/ship/ShipContext.ts';
+import {ReactElement, useCallback, useEffect, useState} from 'react';
+import {useAuth} from '../../hooks/auth/useAuth.tsx';
+import {useLocation, useParams} from 'react-router-dom';
+import {ShipContext} from '../../hooks/ship/ShipContext.ts';
 import {Cargo, Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
-import { Waypoint, WaypointResponse } from '../../models/waypoint.model.ts';
-import { callApi } from '../../utils/api/api-caller.ts';
-import { NavigateResponse } from '../../models/api-response/navigate-response.ts';
-import { ExtractResourcesResponse } from '../../models/api-response/extract-resources-response.ts';
+import {Waypoint, WaypointResponse} from '../../models/waypoint.model.ts';
+import {callApi} from '../../utils/api/api-caller.ts';
+import {NavigateResponse} from '../../models/api-response/navigate-response.ts';
+import {ExtractResourcesResponse} from '../../models/api-response/extract-resources-response.ts';
 import {StatusChangeResponse} from '../../models/api-response/status-change-response.ts';
 import {SellCargoResponse} from '../../models/api-response/sell-cargo-response.ts';
 import {Market} from '../../models/market.model.ts';
 import {ShipyardResponse} from '../../models/api-response/shipyard-response.ts';
+import {getSecondsToArrival} from '../../utils/ship/getSecondsToArrival.ts';
+import useInterval from '../../hooks/interval/useInterval.ts';
 
 interface ShipContextProviderProps {
     children: ReactElement;
 }
 
-export function ShipContextProvider({ children }: ShipContextProviderProps) {
+export function ShipContextProvider({children}: ShipContextProviderProps) {
     const auth = useAuth();
 
     // State passed from clicked button, can be undefined if request didn't come from button click
-    const { state } = useLocation();
+    const {state} = useLocation();
 
     // Id from url params
-    const { shipId } = useParams();
+    const {shipId} = useParams();
 
     // State
     const [ship, setShip] = useState<ShipModel>();
@@ -31,9 +33,10 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
     const [cooldown, setCooldown] = useState<number>(0);
     const [fuel, setFuel] = useState<Fuel>();
     const [nav, setNav] = useState<Nav>();
-    const [cargo, setCargo] = useState<Cargo>()
+    const [cargo, setCargo] = useState<Cargo>();
     const [marketplace, setMarketplace] = useState<Market>();
     const [shipyard, setShipyard] = useState<ShipyardResponse>();
+    const [arrivalTime, setArrivalTime] = useState<number>(0);
 
     function updateShip(ship: ShipModel | undefined) {
         setShip(ship);
@@ -41,6 +44,7 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
         setNav(ship?.nav);
         setCooldown(ship?.cooldown?.remainingSeconds ?? 0);
         setCargo(ship?.cargo);
+        setArrivalTime(getSecondsToArrival(ship?.nav));
     }
 
     const getShip = useCallback(() => {
@@ -50,6 +54,27 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             });
     }, [shipId, auth.token]);
 
+    const getNav = useCallback(() => {
+        callApi<Nav>(`/my/ships/${ship?.symbol}/nav`, auth.token).then(res => {
+            setNav(res.data);
+        });
+    }, [auth.token, ship?.symbol]);
+
+    // Init cooldown interval
+    useInterval(() => {
+        setCooldown((c) => c > 0 ? c - 1 : 0);
+    }, cooldown === 0 ? null : 1000);
+
+    // Init arrival time interval
+    useInterval(() => {
+        setArrivalTime((a) => {
+            if (a - 1 === 0) {
+                getNav();
+            }
+            return a > 0 ? a - 1 : 0
+        });
+    }, arrivalTime === 0 ? null : 1000);
+
     // Initialize ship-details state from url state or from API
     useEffect(() => {
         if (state?.ship) {
@@ -58,30 +83,6 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             getShip();
         }
     }, [state?.ship, getShip]);
-
-    // Handle cooldown interval logic
-    useEffect(() => {
-        let intervalId: number;
-
-        const handleInterval = () => {
-            setCooldown((cooldown) => {
-                if (cooldown && cooldown > 0) {
-                    return cooldown - 1;
-                }
-                clearInterval(intervalId);
-                return 0;
-            });
-        };
-
-        // Set the interval only if cooldown is greater than 0
-        if (cooldown && cooldown > 0) {
-            intervalId = setInterval(handleInterval, 1000);
-        }
-
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, [cooldown]);
 
     // Scan waypoints around this ship-details
     function scanWaypoints(): void {
@@ -99,6 +100,8 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             .then((res) => {
                 setFuel(res.data.fuel);
                 setNav(res.data.nav);
+                setArrivalTime(getSecondsToArrival(res.data.nav));
+                setMarketplace(undefined);
             });
     }
 
@@ -110,7 +113,7 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
             });
     }
 
-    function toggleShipNavStatus(status: string): void {
+    function toggleShipNavStatus(status: 'dock' | 'orbit'): void {
         callApi<StatusChangeResponse>(`/my/ships/${ship?.symbol}/${status}`, auth.token, 'post')
             .then((res) => {
                 setNav(res.data.nav);
@@ -155,6 +158,7 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
         cargo,
         marketplace,
         shipyard,
+        arrivalTime,
         scanWaypoints,
         navigateToWaypoint,
         extractResources,

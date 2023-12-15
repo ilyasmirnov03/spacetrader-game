@@ -9,12 +9,13 @@ import './ship-details.css';
 import {Marketplace} from './marketplace/Marketplace.tsx';
 import {Shipyard} from './shipyard/Shipyard.tsx';
 import {PreviousWaypoint} from './previous-waypoint/PreviousWaypoint.tsx';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 export const ShipDetails: FC = () => {
 
     const shipContext = useShip();
 
-    function getOppositeNavStatus(): string {
+    function getOppositeNavStatus(): 'dock' | 'orbit' {
         return shipContext.nav?.status === 'IN_ORBIT' ? 'dock' : 'orbit';
     }
 
@@ -30,6 +31,11 @@ export const ShipDetails: FC = () => {
                 </div>
                 <div className="flex items-center">
                     {shipNavStatusTransform(shipContext.nav)}
+                    {shipContext.nav?.status === 'IN_TRANSIT' &&
+                        <p>
+                            <FontAwesomeIcon icon="angles-right"/>
+                            in transit ({shipContext.arrivalTime}s)
+                        </p>}
                     {shipContext.nav?.status !== 'IN_TRANSIT' &&
                         <button className="button" onClick={toggleNavStatus}>{getOppositeNavStatus()}</button>}
                 </div>

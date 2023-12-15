@@ -13,10 +13,11 @@ interface ShipContextInterface {
     cargo: Cargo | undefined,
     marketplace: Market | undefined,
     shipyard: ShipyardResponse | undefined,
+    arrivalTime: number,
     scanWaypoints: () => void
     navigateToWaypoint: (s: string | undefined) => void,
     extractResources: () => void,
-    toggleShipNavStatus: (s: string) => void,
+    toggleShipNavStatus: (s: 'dock' | 'orbit') => void,
     sellCargo: (s: string) => void,
     getMarketplaceInfo: () => void,
     getShipyard: () => void,
@@ -31,6 +32,7 @@ export const ShipContext = createContext<ShipContextInterface>({
     cargo: undefined,
     marketplace: undefined,
     shipyard: undefined,
+    arrivalTime: 0,
     scanWaypoints: () => {
     },
     navigateToWaypoint: () => {
