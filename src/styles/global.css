@@ -52,15 +52,15 @@ body {
   width: fit-content;
   outline: none;
   border: none;
-  cursor: pointer;
 }
 
 .button:hover:not([disabled]) {
+  cursor: pointer;
   background-color: var(--color-gray);
 }
 
 .button[disabled] {
-  opacity: 0.90;
+  opacity: 0.30;
 }
 
 .title-1xl {
@@ -83,6 +83,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.vertical-flex-layout > .bottom-anchored {
+  margin-top: auto;
+}
+
+.w-full {
+  width: 100%;
 }
 
 /* Main layout

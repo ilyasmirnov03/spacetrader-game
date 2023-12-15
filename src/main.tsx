@@ -11,14 +11,14 @@ import {
     faAnchor,
     faAnglesRight,
     faArrowRightFromBracket,
-    faChartSimple, faCoins, faGasPump,
+    faChartSimple, faCoins, faGasPump, faLocationDot,
     faRocket, faRotateRight, faSatellite
 } from '@fortawesome/free-solid-svg-icons';
 import {AuthContextProvider} from './providers/auth/AuthContextProvider.tsx';
 import {ShipContextProvider} from './providers/ship/ShipContextProvider.tsx';
 
 // Init icons
-library.add(faRocket, faChartSimple, faArrowRightFromBracket, faAnchor, faAnglesRight, faSatellite, faCoins, faGasPump, faRotateRight);
+library.add(faRocket, faChartSimple, faArrowRightFromBracket, faAnchor, faAnglesRight, faSatellite, faCoins, faGasPump, faRotateRight, faLocationDot);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

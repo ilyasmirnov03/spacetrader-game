@@ -124,7 +124,7 @@ export interface ShipModel {
     nav: Nav;
     crew: Crew;
     fuel: Fuel;
-    cooldown: Cooldown;
+    cooldown?: Cooldown;
     frame: Frame;
     reactor: Reactor;
     engine: Engine;

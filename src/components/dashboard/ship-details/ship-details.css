@@ -3,3 +3,11 @@
     flex-wrap: wrap;
     gap: 1rem;
 }
+
+.longList {
+    display: flex;
+    gap: 1rem;
+    overflow: auto;
+    padding: 1rem 0;
+    width: 100%;
+}
