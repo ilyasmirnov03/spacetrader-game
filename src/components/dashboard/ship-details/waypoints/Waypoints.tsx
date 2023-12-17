@@ -23,8 +23,8 @@ export const Waypoints: FC<WaypointsProps> = () => {
                     <li className="tab vertical-flex-layout" key={waypoint.symbol}>
                         <p>{waypoint.type} {waypoint.symbol}</p>
                         <p>{waypoint.traits.map(trait => trait.name + ',')}</p>
-                        <p>Distance - {Math.round(getDistanceToWaypoint(shipContext.ship, waypoint))}</p>
-                        <p>Will arrive: {getArrivalTime(shipContext.ship, waypoint)}</p>
+                        <p>Distance - {Math.round(getDistanceToWaypoint(shipContext.nav, waypoint))}</p>
+                        <p>Will arrive: {getArrivalTime(shipContext.nav, shipContext.ship?.engine.speed, waypoint)}</p>
                         <button className="button bottom-anchored"
                                 onClick={() => shipContext.navigateToWaypoint(waypoint.symbol)}>
                             Navigate to waypoint
