@@ -42,7 +42,7 @@ interface FuelConsumed {
     timestamp: string;
 }
 
-export interface Fuel {
+export interface FuelModel {
     current: number;
     capacity: number;
     consumed: FuelConsumed;
@@ -123,7 +123,7 @@ export interface ShipModel {
     symbol: string;
     nav: Nav;
     crew: Crew;
-    fuel: Fuel;
+    fuel: FuelModel;
     cooldown?: Cooldown;
     frame: Frame;
     reactor: Reactor;

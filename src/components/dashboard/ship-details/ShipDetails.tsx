@@ -40,7 +40,7 @@ export const ShipDetails: FC = () => {
                         <button className="button" onClick={toggleNavStatus}>{getOppositeNavStatus()}</button>}
                 </div>
                 <p>Flight mode: {shipContext.nav?.flightMode}</p>
-                <Fuel ship={shipContext.ship}/>
+                <Fuel ship={shipContext.ship} fuel={shipContext.fuel}/>
             </header>
             <WaypointInfo/>
             {(shipContext.ship?.cargo.capacity ?? 0) > 0 && <Cargo/>}

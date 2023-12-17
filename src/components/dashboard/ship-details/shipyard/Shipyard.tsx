@@ -6,6 +6,7 @@ import {ShipyardShip} from '../../../../models/api-response/shipyard-response.ts
 import {callApi} from '../../../../utils/api/api-caller.ts';
 import {ShipPurchaseResponse} from '../../../../models/api-response/ship-purchase-response.ts';
 import './shipyard.css';
+import {toast} from 'react-toastify';
 
 export const Shipyard: FC = () => {
 
@@ -18,8 +19,7 @@ export const Shipyard: FC = () => {
             waypointSymbol: shipContext.shipyard?.symbol
         }).then(res => {
             auth.setAgentState(res.data.agent);
-            alert('Successful ship purchase');
-            console.log('Successful ship purchase', res);
+            toast.success(`Successful ${res.data.transaction.shipSymbol} purchase`);
         });
     }
 

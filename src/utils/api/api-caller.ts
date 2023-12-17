@@ -1,5 +1,7 @@
 import {ApiResponse} from '../../models/api-response/api-response.ts';
 import {url} from '../../constants/url.const.ts';
+import {ErrorResponse} from '../../models/api-response/error-response.ts';
+import {toast} from 'react-toastify';
 
 // Methods used in application
 type HTTPMethod = 'get' | 'post' | 'patch';
@@ -10,23 +12,31 @@ export async function callApi<T>(
     method: HTTPMethod = 'get',
     body: unknown = undefined,
 ): Promise<ApiResponse<T>> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json')
+    if (token) {
+        headers.append('Authorization', `Bearer ${token}`)
+    }
     const options: RequestInit = {
         method,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
+        headers,
     };
     if (body) {
         options.body = JSON.stringify(body);
     }
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         fetch(`${url}${endpoint}`, options)
-            .then(res => res.json())
-            .then(data => resolve(data))
-            .catch(err => {
-                console.error('Error while fetching', err);
-                reject(err);
+            .then(res => {
+                if (res.ok) {
+                    return res.json().then(data => {
+                        resolve(data);
+                    });
+                } else {
+                    res.json().then((data: ErrorResponse) => {
+                        toast.error(data.error.message);
+                        throw new Error(data.error.message);
+                    });
+                }
             });
     });
 }

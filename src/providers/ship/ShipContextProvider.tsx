@@ -2,7 +2,7 @@ import {ReactElement, useCallback, useEffect, useState} from 'react';
 import {useAuth} from '../../hooks/auth/useAuth.tsx';
 import {useLocation, useParams} from 'react-router-dom';
 import {ShipContext} from '../../hooks/ship/ShipContext.ts';
-import {Cargo, Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
+import {Cargo, FuelModel, Nav, ShipModel} from '../../models/ship.model.ts';
 import {Waypoint, WaypointResponse} from '../../models/waypoint.model.ts';
 import {callApi} from '../../utils/api/api-caller.ts';
 import {NavigateResponse} from '../../models/api-response/navigate-response.ts';
@@ -13,6 +13,7 @@ import {Market} from '../../models/market.model.ts';
 import {ShipyardResponse} from '../../models/api-response/shipyard-response.ts';
 import {getSecondsToArrival} from '../../utils/ship/getSecondsToArrival.ts';
 import useInterval from '../../hooks/interval/useInterval.ts';
+import {toast} from 'react-toastify';
 
 interface ShipContextProviderProps {
     children: ReactElement;
@@ -31,7 +32,7 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
     const [ship, setShip] = useState<ShipModel>();
     const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
     const [cooldown, setCooldown] = useState<number>(0);
-    const [fuel, setFuel] = useState<Fuel>();
+    const [fuel, setFuel] = useState<FuelModel>();
     const [nav, setNav] = useState<Nav>();
     const [cargo, setCargo] = useState<Cargo>();
     const [marketplace, setMarketplace] = useState<Market>();
@@ -71,7 +72,7 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
             if (a - 1 === 0) {
                 getNav();
             }
-            return a > 0 ? a - 1 : 0
+            return a > 0 ? a - 1 : 0;
         });
     }, arrivalTime === 0 ? null : 1000);
 
@@ -110,6 +111,9 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
             .then((res) => {
                 setCooldown(res.data.cooldown.remainingSeconds);
                 setCargo(res.data.cargo);
+                toast.success(
+                    `Successfully extracted ${res.data.extraction.yield.units} ${res.data.extraction.yield.symbol}`
+                );
             });
     }
 
@@ -132,6 +136,9 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
             .then((res) => {
                 setCargo(res.data.cargo);
                 auth.setAgentState(res.data.agent);
+                toast.success(
+                    `+${res.data.transaction.totalPrice} from ${res.data.transaction.units} ${res.data.transaction.tradeSymbol}`
+                );
             });
     }
 

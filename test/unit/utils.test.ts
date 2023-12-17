@@ -10,9 +10,9 @@ test('Get readable date from 2003-03-30 should equal 30/03 01:00:00', () => {
 });
 
 test('Get arrival time of mock ship in proper format', () => {
-    expect(getArrivalTime(Ship, WaypointObject)).toBe('12/12 17:48:00');
+    expect(getArrivalTime(Ship.nav, Ship.engine.speed, WaypointObject)).toBe('12/12 17:48:00');
 });
 
 test('Get distance from ship to waypoint', () => {
-    expect(Math.round(getDistanceToWaypoint(Ship, WaypointObject))).toBe(7);
+    expect(Math.round(getDistanceToWaypoint(Ship.nav, WaypointObject))).toBe(7);
 });
