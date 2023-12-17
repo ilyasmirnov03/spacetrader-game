@@ -1,6 +1,7 @@
 import {ApiResponse} from '../../models/api-response/api-response.ts';
 import {url} from '../../constants/url.const.ts';
 import {ErrorResponse} from '../../models/api-response/error-response.ts';
+import {toast} from 'react-toastify';
 
 // Methods used in application
 type HTTPMethod = 'get' | 'post' | 'patch';
@@ -32,6 +33,7 @@ export async function callApi<T>(
                     });
                 } else {
                     res.json().then((data: ErrorResponse) => {
+                        toast.error(data.error.message);
                         throw new Error(data.error.message);
                     });
                 }

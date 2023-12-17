@@ -9,7 +9,7 @@ export interface Transaction {
     shipSymbol: string;
     tradeSymbol: string;
     type: string;
-    units: 0;
+    units: number;
     pricePerUnit: number;
     totalPrice: number;
     timestamp: string;

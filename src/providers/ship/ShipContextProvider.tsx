@@ -13,6 +13,7 @@ import {Market} from '../../models/market.model.ts';
 import {ShipyardResponse} from '../../models/api-response/shipyard-response.ts';
 import {getSecondsToArrival} from '../../utils/ship/getSecondsToArrival.ts';
 import useInterval from '../../hooks/interval/useInterval.ts';
+import {toast} from 'react-toastify';
 
 interface ShipContextProviderProps {
     children: ReactElement;
@@ -71,7 +72,7 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
             if (a - 1 === 0) {
                 getNav();
             }
-            return a > 0 ? a - 1 : 0
+            return a > 0 ? a - 1 : 0;
         });
     }, arrivalTime === 0 ? null : 1000);
 
@@ -110,6 +111,9 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
             .then((res) => {
                 setCooldown(res.data.cooldown.remainingSeconds);
                 setCargo(res.data.cargo);
+                toast.success(
+                    `Successfully extracted ${res.data.extraction.yield.units} ${res.data.extraction.yield.symbol}`
+                );
             });
     }
 
@@ -132,6 +136,9 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
             .then((res) => {
                 setCargo(res.data.cargo);
                 auth.setAgentState(res.data.agent);
+                toast.success(
+                    `+${res.data.transaction.totalPrice} from ${res.data.transaction.units} ${res.data.transaction.tradeSymbol}`
+                );
             });
     }
 
