@@ -36,7 +36,7 @@ export const Ships: FC<ShipsProps> = () => {
                     <article key={ship.symbol} className="tab vertical-flex-layout">
                         <h3 className="title-2xl">{ship.symbol} {ship.frame.symbol}</h3>
                         <p><FontAwesomeIcon icon="location-dot"/> {ship.nav.waypointSymbol} {ship.nav.route.destination.type}</p>
-                        <Fuel ship={ship}/>
+                        <Fuel ship={ship} fuel={ship.fuel}/>
                         <footer>
                             <Link className="button" to={`/ships/${ship.symbol}`} state={{ ship }}>Ship details</Link>
                         </footer>

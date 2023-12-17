@@ -4,6 +4,8 @@ import { LocalStorageEnum } from '../../enum/local-storage.enum.ts';
 import { AuthContext } from '../../hooks/auth/AuthContext.ts';
 import { AgentInfoModel } from '../../models/agent-info.model.ts';
 import { callApi } from '../../utils/api/api-caller.ts';
+import {SignupBody} from '../../models/api-body/signup-body.ts';
+import {RegisterResponse} from '../../models/api-response/register-response.ts';
 
 interface AuthContextProviderProps {
     children: ReactElement;
@@ -49,6 +51,16 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         setAgent(agent);
     }
 
+    function signup(body: SignupBody): void {
+        callApi<RegisterResponse>('/register', token, 'post', body)
+            .then(res => {
+                setAgent(res.data.agent);
+                setToken(res.data.token);
+                localStorage.setItem(LocalStorageEnum.LOGIN_KEY, res.data.token);
+                navigate('/dashboard');
+            })
+    }
+
     const attemptToAutoLogin = useCallback(() => {
         if (token && !agent) {
             login(token);
@@ -67,6 +79,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         agent,
         logout,
         setAgentState,
+        signup,
     }}>
         {children}
     </AuthContext.Provider>;

@@ -1,6 +1,6 @@
-import {Fuel, Nav} from '../ship.model.ts';
+import {FuelModel, Nav} from '../ship.model.ts';
 
 export interface NavigateResponse {
-    fuel: Fuel;
+    fuel: FuelModel;
     nav: Nav;
 }

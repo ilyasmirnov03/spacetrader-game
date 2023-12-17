@@ -2,7 +2,7 @@ import {ReactElement, useCallback, useEffect, useState} from 'react';
 import {useAuth} from '../../hooks/auth/useAuth.tsx';
 import {useLocation, useParams} from 'react-router-dom';
 import {ShipContext} from '../../hooks/ship/ShipContext.ts';
-import {Cargo, Fuel, Nav, ShipModel} from '../../models/ship.model.ts';
+import {Cargo, FuelModel, Nav, ShipModel} from '../../models/ship.model.ts';
 import {Waypoint, WaypointResponse} from '../../models/waypoint.model.ts';
 import {callApi} from '../../utils/api/api-caller.ts';
 import {NavigateResponse} from '../../models/api-response/navigate-response.ts';
@@ -31,7 +31,7 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
     const [ship, setShip] = useState<ShipModel>();
     const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
     const [cooldown, setCooldown] = useState<number>(0);
-    const [fuel, setFuel] = useState<Fuel>();
+    const [fuel, setFuel] = useState<FuelModel>();
     const [nav, setNav] = useState<Nav>();
     const [cargo, setCargo] = useState<Cargo>();
     const [marketplace, setMarketplace] = useState<Market>();
