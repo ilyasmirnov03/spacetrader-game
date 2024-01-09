@@ -5,8 +5,8 @@ import { getDistanceToWaypoint } from '../../src/utils/ship/getDistanceToWaypoin
 import { Ship } from '../mock-data/ship';
 import { WaypointObject } from '../mock-data/waypoint';
 
-test('Get readable date from 2003-03-30 should equal 30/03 01:00:00', () => {
-    expect(getReadableDate(new Date("2003-03-30"))).toBe('30/03 01:00:00');
+test('Get readable date from 2003-03-30 should equal 30/03 00:00:00', () => {
+    expect(getReadableDate(new Date("2003-03-30"), true)).toBe('30/03 00:00:00');
 });
 
 // TODO: create proper test
