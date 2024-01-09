@@ -1,12 +1,12 @@
-import {FC} from 'react';
-import {useShip} from '../../../../hooks/ship/useShip.ts';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useAuth} from '../../../../hooks/auth/useAuth.tsx';
-import {ShipyardShip} from '../../../../models/api-response/shipyard-response.ts';
-import {callApi} from '../../../../utils/api/api-caller.ts';
-import {ShipPurchaseResponse} from '../../../../models/api-response/ship-purchase-response.ts';
+import { FC } from 'react';
+import { useShip } from '../../../../hooks/ship/useShip.ts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAuth } from '../../../../hooks/auth/useAuth.tsx';
+import { ShipyardShip } from '../../../../models/api-response/shipyard-response.ts';
+import { callApi } from '../../../../utils/api/api-caller.ts';
+import { ShipPurchaseResponse } from '../../../../models/api-response/ship-purchase-response.ts';
 import './shipyard.css';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export const Shipyard: FC = () => {
 
@@ -35,11 +35,11 @@ export const Shipyard: FC = () => {
             </ul>
             <ul className="longList">
                 {shipContext.shipyard?.ships?.map((ship, i) => (
-                    <li key={i} className="tab vertical-flex-layout shipyard-ship">
+                    <li key={ship.type + i} className="tab vertical-flex-layout shipyard-ship">
                         <p><b>{ship.type}</b></p>
                         <p>{ship.frame.description}</p>
-                        <p><b>{ship.purchasePrice}</b><FontAwesomeIcon icon="coins"/></p>
-                        <p><FontAwesomeIcon icon="gas-pump"/> {ship.frame.fuelCapacity}</p>
+                        <p><b>{ship.purchasePrice}</b><FontAwesomeIcon icon="coins" /></p>
+                        <p><FontAwesomeIcon icon="gas-pump" /> {ship.frame.fuelCapacity}</p>
                         <ul className="shipyard-ship__characteristics">
                             <li>Mounts: {ship.mounts.map(mount => mount.symbol + ' ')}</li>
                             <li>Modules: {ship.modules.map(module => module.symbol + ' ')}</li>
@@ -47,8 +47,8 @@ export const Shipyard: FC = () => {
                             <li>Engine: {ship.engine.symbol}</li>
                         </ul>
                         <button className="button bottom-anchored"
-                                disabled={auth.agent && auth.agent?.credits <= ship.purchasePrice}
-                                onClick={() => buyShip(ship)}>
+                            disabled={auth.agent && auth.agent?.credits <= ship.purchasePrice}
+                            onClick={() => buyShip(ship)}>
                             Buy
                         </button>
                     </li>

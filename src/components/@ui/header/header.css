@@ -2,11 +2,27 @@
     padding: .5rem var(--main-layout-vertical-padding);
 }
 
+.headerList__item {
+    margin: .5rem 0;
+}
+
 .headerLink {
     background-color: var(--color-primary);
     border-radius: var(--border-radius);
-    color: var(--color-primary-dark);
-    margin: .5rem 0;
     padding: .5rem;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.no-style-btn {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+}
+
+.headerLink>* {
+    color: var(--color-primary-dark);
 }
