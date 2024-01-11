@@ -4,11 +4,11 @@ import { LocalStorageEnum } from '../../enum/local-storage.enum.ts';
 import { AuthContext } from '../../hooks/auth/AuthContext.ts';
 import { AgentInfoModel } from '../../models/agent-info.model.ts';
 import { callApi } from '../../utils/api/api-caller.ts';
-import {SignupBody} from '../../models/api-body/signup-body.ts';
-import {RegisterResponse} from '../../models/api-response/register-response.ts';
+import { SignupBody } from '../../models/api-body/signup-body.ts';
+import { RegisterResponse } from '../../models/api-response/register-response.ts';
 
 interface AuthContextProviderProps {
-    children: ReactElement;
+    readonly children: ReactElement;
 }
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
@@ -47,10 +47,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         navigate('/login');
     }
 
-    function setAgentState(agent: AgentInfoModel): void {
-        setAgent(agent);
-    }
-
     function signup(body: SignupBody): void {
         callApi<RegisterResponse>('/register', token, 'post', body)
             .then(res => {
@@ -78,7 +74,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         login,
         agent,
         logout,
-        setAgentState,
+        setAgentState: setAgent,
         signup,
     }}>
         {children}

@@ -1,13 +1,14 @@
-import {createContext} from 'react';
-import {Cargo, FuelModel, Nav, ShipModel} from '../../models/ship.model.ts';
-import {Waypoint} from '../../models/waypoint.model.ts';
-import {Market} from '../../models/market.model.ts';
-import {ShipyardResponse} from '../../models/api-response/shipyard-response.ts';
+import { createContext } from 'react';
+import { Cargo, FuelModel, Nav, ShipModel } from '../../models/ship.model.ts';
+import { Waypoint } from '../../models/waypoint.model.ts';
+import { Market } from '../../models/market.model.ts';
+import { ShipyardResponse } from '../../models/api-response/shipyard-response.ts';
 
 interface ShipContextInterface {
     ship: ShipModel | undefined;
     waypoints: Waypoint[];
     fuel: FuelModel | undefined,
+    setFuel: (m: FuelModel) => void,
     cooldown: number,
     nav: Nav | undefined,
     cargo: Cargo | undefined,
@@ -26,6 +27,7 @@ interface ShipContextInterface {
 export const ShipContext = createContext<ShipContextInterface>({
     ship: undefined,
     fuel: undefined,
+    setFuel: () => { },
     waypoints: [],
     cooldown: 0,
     nav: undefined,

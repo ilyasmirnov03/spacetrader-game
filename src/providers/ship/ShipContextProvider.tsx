@@ -1,32 +1,32 @@
-import {ReactElement, useCallback, useEffect, useState} from 'react';
-import {useAuth} from '../../hooks/auth/useAuth.tsx';
-import {useLocation, useParams} from 'react-router-dom';
-import {ShipContext} from '../../hooks/ship/ShipContext.ts';
-import {Cargo, FuelModel, Nav, ShipModel} from '../../models/ship.model.ts';
-import {Waypoint, WaypointResponse} from '../../models/waypoint.model.ts';
-import {callApi} from '../../utils/api/api-caller.ts';
-import {NavigateResponse} from '../../models/api-response/navigate-response.ts';
-import {ExtractResourcesResponse} from '../../models/api-response/extract-resources-response.ts';
-import {StatusChangeResponse} from '../../models/api-response/status-change-response.ts';
-import {SellCargoResponse} from '../../models/api-response/sell-cargo-response.ts';
-import {Market} from '../../models/market.model.ts';
-import {ShipyardResponse} from '../../models/api-response/shipyard-response.ts';
-import {getSecondsToArrival} from '../../utils/ship/getSecondsToArrival.ts';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useAuth } from '../../hooks/auth/useAuth.tsx';
+import { useLocation, useParams } from 'react-router-dom';
+import { ShipContext } from '../../hooks/ship/ShipContext.ts';
+import { Cargo, FuelModel, Nav, ShipModel } from '../../models/ship.model.ts';
+import { Waypoint, WaypointResponse } from '../../models/waypoint.model.ts';
+import { callApi } from '../../utils/api/api-caller.ts';
+import { NavigateResponse } from '../../models/api-response/navigate-response.ts';
+import { ExtractResourcesResponse } from '../../models/api-response/extract-resources-response.ts';
+import { StatusChangeResponse } from '../../models/api-response/status-change-response.ts';
+import { SellCargoResponse } from '../../models/api-response/sell-cargo-response.ts';
+import { Market } from '../../models/market.model.ts';
+import { ShipyardResponse } from '../../models/api-response/shipyard-response.ts';
+import { getSecondsToArrival } from '../../utils/ship/getSecondsToArrival.ts';
 import useInterval from '../../hooks/interval/useInterval.ts';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface ShipContextProviderProps {
-    children: ReactElement;
+    readonly children: ReactElement;
 }
 
-export function ShipContextProvider({children}: ShipContextProviderProps) {
+export function ShipContextProvider({ children }: ShipContextProviderProps) {
     const auth = useAuth();
 
     // State passed from clicked button, can be undefined if request didn't come from button click
-    const {state} = useLocation();
+    const { state } = useLocation();
 
     // Id from url params
-    const {shipId} = useParams();
+    const { shipId } = useParams();
 
     // State
     const [ship, setShip] = useState<ShipModel>();
@@ -161,6 +161,7 @@ export function ShipContextProvider({children}: ShipContextProviderProps) {
         waypoints,
         cooldown,
         fuel,
+        setFuel,
         nav,
         cargo,
         marketplace,

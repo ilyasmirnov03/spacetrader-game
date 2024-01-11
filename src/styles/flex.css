@@ -11,6 +11,10 @@
     justify-content: center;
 }
 
+.justify-between {
+    justify-content: space-between;
+}
+
 .wrap {
     flex-wrap: wrap;
 }
