@@ -161,6 +161,7 @@ export function ShipContextProvider({ children }: ShipContextProviderProps) {
         waypoints,
         cooldown,
         fuel,
+        setFuel,
         nav,
         cargo,
         marketplace,

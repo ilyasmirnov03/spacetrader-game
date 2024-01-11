@@ -11,6 +11,7 @@ import { Shipyard } from './shipyard/Shipyard.tsx';
 import { PreviousWaypoint } from './previous-waypoint/PreviousWaypoint.tsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Cooldown } from './cooldown/Cooldown.tsx';
+import { Refuel } from './fuel/ Refuel.tsx';
 
 export const ShipDetails: FC = () => {
 
@@ -42,7 +43,12 @@ export const ShipDetails: FC = () => {
                         <button className="button" onClick={toggleNavStatus}>{getOppositeNavStatus()}</button>}
                 </div>
                 <p>Flight mode: {shipContext.nav?.flightMode}</p>
-                <Fuel ship={shipContext.ship} fuel={shipContext.fuel} />
+                {(shipContext.ship?.frame.fuelCapacity ?? 0) > 0 &&
+                    <>
+                        <Fuel fuel={shipContext.fuel} />
+                        <Refuel />
+                    </>
+                }
             </header>
             <WaypointInfo />
             {(shipContext.ship?.cargo.capacity ?? 0) > 0 && <Cargo />}

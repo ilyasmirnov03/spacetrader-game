@@ -47,10 +47,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         navigate('/login');
     }
 
-    function setAgentState(agent: AgentInfoModel): void {
-        setAgent(agent);
-    }
-
     function signup(body: SignupBody): void {
         callApi<RegisterResponse>('/register', token, 'post', body)
             .then(res => {
@@ -78,7 +74,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         login,
         agent,
         logout,
-        setAgentState,
+        setAgentState: setAgent,
         signup,
     }}>
         {children}
